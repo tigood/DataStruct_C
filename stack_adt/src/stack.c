@@ -35,7 +35,7 @@ void MakeEmpty(Stack s) {
         fprintf(stderr, "请传入一个初始化完成的栈！\n");
         exit(EXIT_FAILURE);
     }
-    while (IsEmpty(s))
+    while (!IsEmpty(s))
         Pop(s);
 }
 
@@ -66,6 +66,10 @@ ElementType Top(Stack s) {
 
 // 弹出栈顶元素
 ElementType Pop(Stack s) {
+    if (IsEmpty(s)) {
+        fprintf(stderr, "该栈为空!\n");
+        exit(EXIT_FAILURE);
+    }
     // 存储要删除的值
     ElementType oldVal = s->next->elem;
     // 存储指向这个将要删除空间的指针
