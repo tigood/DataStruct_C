@@ -1,6 +1,6 @@
-#include "../include/stack.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include "ch_stack.h"
 
 // 节点的实现
 struct Node{
@@ -31,7 +31,8 @@ Stack CreateStack(void) {
 
 // 将栈清空
 void MakeEmpty(Stack s) {
-    if (s == NULL) {
+    if (s == NULL)
+    {
         fprintf(stderr, "请传入一个初始化完成的栈！\n");
         exit(EXIT_FAILURE);
     }
