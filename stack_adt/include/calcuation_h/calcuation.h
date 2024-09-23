@@ -25,7 +25,7 @@ inline void eat_line(void) {
 */
 
 // 前缀到中缀的转换器
-char *perToSuffix(const char *);
+char *infixToSuffix(const char *);
 
 // 根据后缀表达式计算结果
 int calcuationBySuffix(const char *);

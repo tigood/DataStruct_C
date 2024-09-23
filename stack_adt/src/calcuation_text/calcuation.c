@@ -61,7 +61,7 @@ int getPrecedence(char ch) {
     }
 }
 
-char *perToSuffix(const char *per){
+char *infixToSuffix(const char *per){
     // 创建一个栈用来存储运算符
     Stack oper_stack = CreateStack();
 

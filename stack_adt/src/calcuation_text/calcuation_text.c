@@ -9,7 +9,7 @@ int main(void) {
     char user_input[MAXLEN];
     printf("请输入一个算式：\n");
     s_gets(user_input, MAXLEN);
-    char *result = perToSuffix(user_input);
+    char *result = infixToSuffix(user_input);
     printf("转换后为：%s\n", result);
     free(result);
 
