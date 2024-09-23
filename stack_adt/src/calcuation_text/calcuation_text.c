@@ -11,6 +11,7 @@ int main(void) {
     s_gets(user_input, MAXLEN);
     char *result = infixToSuffix(user_input);
     printf("转换后为：%s\n", result);
+    printf("计算结果为：%d\n", calcuationBySuffix(result));
     free(result);
 
     return 0;

@@ -86,32 +86,40 @@ char *infixToSuffix(const char *per){
         }
         if(isOperator(*temp_per)) {
             // 如果当前字符是一个运算符
+            // 将这个字符封装为一个字符串
+            char *operatorStr = (char *)malloc(2);
+            operatorStr[0] = *temp_per;
+            operatorStr[1] = '\0';
             // 判断这个栈是否为空，如果为空直接加入
             if (IsEmpty(oper_stack)) {
                 // 将该字符加入栈中
-                Push(oper_stack, *temp_per);
+                Push(oper_stack, operatorStr);
             } else {
                 if (*temp_per == '(') {
-                    Push(oper_stack, *temp_per);
+                    Push(oper_stack, operatorStr);
                 } else if (*temp_per == ')') {
                     // 将栈中的元素弹出，一直到（
-                    while (!IsEmpty(oper_stack) && Top(oper_stack) != '(')
+                    while (!IsEmpty(oper_stack) && Top(oper_stack)[0] != '(')
                     {
                         // 添加到输出列表中
-                        *(temp_result++) = Pop(oper_stack);
+                        char *oldElem = Pop(oper_stack);
+                        *(temp_result++) = oldElem[0];  // 获取字符
                         *(temp_result++) = ' ';
+                        free(oldElem);
                     }
                     // 将(弹出
-                    Pop(oper_stack);
+                    free(Pop(oper_stack));
                 } else {
                     // 如果这个栈不为空，则判断优先级
                     // 将栈中优先级大于这个运算符的运算符弹出来添加到输出列表中
-                    while (!IsEmpty(oper_stack) && isHigher(Top(oper_stack), *temp_per)) {
-                        *(temp_result++) = Pop(oper_stack);
+                    while (!IsEmpty(oper_stack) && isHigher(Top(oper_stack)[0], *temp_per)) {
+                        char *oldElem = Pop(oper_stack);
+                        *(temp_result++) = oldElem[0];  // 获取字符
                         *(temp_result++) = ' ';
+                        free(oldElem);
                     }
                     // 将当前字符加入栈中
-                    Push(oper_stack, *temp_per);
+                    Push(oper_stack, operatorStr);
                 }
             }
         } else {
@@ -124,8 +132,10 @@ char *infixToSuffix(const char *per){
     // 如果栈中还有剩余运算符则逐一弹出
     while (!IsEmpty(oper_stack))
     {
-        *(temp_result++) = Pop(oper_stack);
+        char *oldElem = Pop(oper_stack);
+        *(temp_result++) = oldElem[0];
         *(temp_result++) = ' ';
+        free(oldElem);
     }
     // 释放栈例程
     DisposeStack(oper_stack);
@@ -133,3 +143,71 @@ char *infixToSuffix(const char *per){
     return result_str;
 }
 
+int calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
+    int inum1 = atoi(num1);
+    int inum2 = atoi(num2);
+    char oper_ch = oper[0];
+    if (oper_ch == '+')
+    {
+        return inum1 + inum2;
+    }
+    else if (oper_ch == '-')
+    {
+        return inum1 - inum2;
+    }
+    else if (oper_ch == '*')
+    {
+        return inum1 * inum2;
+    }
+    else if (oper_ch == '/')
+    {
+        return inum1 / inum2;
+    }
+    // 默认返回
+    return 0;
+}
+
+// 计算后缀表达式的值
+int calcuationBySuffix(const char *formula) {
+    // 创建一个栈
+    // 遇到操作数，就将操作数压入栈中
+    // 遇到运算符，就在栈中弹出两个操作数进行计算
+    // 计算完毕之后再将结果压入栈中
+    // 循环到算式结束
+    Stack operand_stack = CreateStack();
+    const char *temp_formula = formula;
+    while (*temp_formula != '\0')
+    {
+        if (*temp_formula == ' ') {
+            temp_formula++;
+            continue;
+        }
+        // 将字符封装为一个字符串
+        char *formualStr = (char *)malloc(2);
+        formualStr[0] = *temp_formula;
+        formualStr[1] = '\0';
+        // 如果是一个操作数，就将这个操作数压入栈中
+        if (!isOperator(*temp_formula)) {
+            Push(operand_stack, formualStr);
+        } else {
+            // 如果是一个操作符就从栈中弹出两个数计算
+            char *num1 = Pop(operand_stack);
+            char *num2 = Pop(operand_stack);
+            int cal_result = calcuation_two_nums(num1, num2, formualStr);
+            free(num1);
+            free(num2);
+            free(formualStr);
+            // 将计算的结果转换为字符串，然后重新存入栈中
+            char resultStr[20];
+            snprintf(resultStr, sizeof(resultStr), "%d", cal_result);
+            Push(operand_stack, resultStr);
+        }
+        temp_formula++;
+    }
+    // 执行完毕之后将最后的结果从栈中取出来
+    char *result = Pop(operand_stack);
+    int iresult = atoi(result);
+    free(result);
+    DisposeStack(operand_stack);
+    return iresult;
+}

@@ -13,7 +13,7 @@
 struct Node;
 typedef struct Node *PtrToNode;
 typedef PtrToNode Stack;
-typedef char ElementType;
+typedef char* ElementType;
 
 // 判断这个栈是否为空
 // 前置条件：传入一个初始化完成的栈

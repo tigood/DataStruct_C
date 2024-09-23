@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "ch_stack.h"
 
 // 节点的实现
@@ -50,7 +51,7 @@ bool Push(Stack s, ElementType newElem) {
         return false;
     }
     // 分配成功之后初始化这个节点
-    newNode->elem = newElem;
+    newNode->elem = strdup(newElem);
     newNode->next = s->next;
     s->next = newNode;
     return true;
