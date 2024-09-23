@@ -146,20 +146,19 @@ char *infixToSuffix(const char *per){
 int calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
     int inum1 = atoi(num1);
     int inum2 = atoi(num2);
-    char oper_ch = oper[0];
-    if (oper_ch == '+')
+    if (strcmp(oper, "+") == 0)
     {
         return inum1 + inum2;
     }
-    else if (oper_ch == '-')
+    else if (strcmp(oper, "-") == 0)
     {
         return inum1 - inum2;
     }
-    else if (oper_ch == '*')
+    else if (strcmp(oper, "*") == 0)
     {
         return inum1 * inum2;
     }
-    else if (oper_ch == '/')
+    else if (strcmp(oper, "/") == 0)
     {
         return inum1 / inum2;
     }
