@@ -27,6 +27,11 @@ char* s_gets(char* st, int n) {
     return result_val;
 }
 
+void eat_line(void) {
+    while (getchar() != '\n')
+        continue;
+}
+
 /*
 方法的实现
 */
@@ -209,4 +214,34 @@ int calcuationBySuffix(const char *formula) {
     free(result);
     DisposeStack(operand_stack);
     return iresult;
+}
+
+// 读取用户输入的算式
+char *getUserInput(char *st, int n) {
+    printf("请输入您要计算的算式（中缀）:\n");
+    char *result_val = s_gets(st, n);
+    return result_val;
+}
+
+// 计算器系统运行函数
+void cal_sys_run(void) {
+    printf("欢迎来到计算器系统！\n");
+    while (true)
+    {
+        char userInput[MAXLEN];
+        getUserInput(userInput, MAXLEN);
+        if (strcmp(userInput, "q") == 0)
+        {
+            break;
+        }
+        // 将输入的算式转换并计算
+        int result = calcuationBySuffix(infixToSuffix(userInput));
+        printf("运算结果为：%d\n", result);
+        printf("是否继续计算？(y/n)\n");
+        char choose_ch = getchar();
+        eat_line();
+        if (choose_ch == 'n')
+            break;
+    }
+    printf("程序结束！bye\n");
 }

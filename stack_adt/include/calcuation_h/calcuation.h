@@ -6,6 +6,7 @@
 #define _CALCUATION_H
 #include <stdbool.h>
 #include <stdio.h>
+#define MAXLEN 100
 
 
 /*
@@ -15,16 +16,15 @@
 char *s_gets(char *st, int n);
 
 // 读取残留的回车
-inline void eat_line(void) {
-    while (getchar () != '\n')
-        continue;
-}
+void eat_line(void);
 
 /*
 方法
 */
 
-// 前缀到中缀的转换器
+// 中缀到后缀的转换器
+// 前置条件：传入一个中缀算式
+// 后值条件：返回该算式的后缀形式（字符串）
 char *infixToSuffix(const char *);
 
 // 根据后缀表达式计算结果
@@ -33,7 +33,7 @@ char *infixToSuffix(const char *);
 int calcuationBySuffix(const char *);
 
 // 读取用户输入的算式
-char *getUserInput(void);
+char *getUserInput(char *st, int n);
 
 // 判断两个运算符的优先级
 // 前置条件：传入两个运算符字符
@@ -54,5 +54,8 @@ int getPrecedence(char ch);
 // 前置条件：传入两个操作数和一个运算符
 // 后置条件：返回计算结果的整形
 int calcuation_two_nums(const char *num1, const char *num2, const char *oper);
+
+// 系统运行函数
+void cal_sys_run(void);
 
 #endif
