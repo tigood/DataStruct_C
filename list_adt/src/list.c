@@ -164,3 +164,30 @@ void forList(const List list) {
     }
     putchar('\n');
 }
+
+ptrToNode FindPrePtrByPos(List l, int pos) {
+    if (pos <= 0) {
+        return NULL;
+    }
+    ptrToNode result = l;
+    while (pos - 1 > 0 && result != NULL)
+    {
+        result = result->next;
+        pos--;
+    }
+    return result;
+}
+
+void exchangeByPtr(List l, int index) {
+    // 找出该位置节点的前置节点，如果为NULL，则表示要查找的节点的位置不合理
+    ptrToNode ptrPreNode = FindPrePtrByPos(l, index);
+    if (ptrPreNode == NULL || ptrPreNode->next == NULL || ptrPreNode->next->next == NULL) {
+        fprintf(stderr, "传入的位置不合理！\n");
+        exit(EXIT_FAILURE);
+    }
+    ptrToNode curr = ptrPreNode->next;
+    ptrToNode temp = curr->next;
+    curr->next = temp->next;
+    temp->next = ptrPreNode->next;
+    ptrPreNode->next = temp;
+}

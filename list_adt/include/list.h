@@ -50,4 +50,15 @@ Item retrieve(Position);
 
 // 遍历一个链表
 void forList(const List);
+
+// 3.3通过只调整指针（而不是数据）来交换两个相邻元素，这里是单链表
+// 前置条件：传入一个有效的单链表和一个位置
+// 后置条件：将指定位置的元素跟它之后的元素进行位置交换
+void exchangeByPtr(List, int);
+
+// 找到指定位置元素的前置指针
+// 前置条件：传入一个指定单链表，和一个指定位置
+// 后值条件：如果该节点有前置节点，则返回指向该前置节点的指针，否则返回NULL
+ptrToNode FindPrePtrByPos(List, int);
+
 #endif
