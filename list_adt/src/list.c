@@ -62,6 +62,16 @@ void makeEmpty(List* plist) {
     (*plist)->next = NULL;
 }
 
+// 销毁一个链表
+void DisposeList(List l) {
+    if (l != NULL) {
+        if (!isEmpty(&l)) {
+            makeEmpty(&l);
+        }
+        free(l);
+    }
+}
+
 // 查找一个元素项
 // 前置条件：传入一个元素值，和一个指向目标链表的指针
 // 后值条件：返回指向第一个值为该元素的节点的指针

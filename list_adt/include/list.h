@@ -61,4 +61,10 @@ void exchangeByPtr(List, int);
 // 后值条件：如果该节点有前置节点，则返回指向该前置节点的指针，否则返回NULL
 ptrToNode FindPrePtrByPos(List, int);
 
+// 将链表置为空
+void makeEmpty(List *plist);
+
+// 销毁一个链表
+void DisposeList(List l);
+
 #endif
