@@ -39,6 +39,7 @@ void exchange_elem_text(void) {
 }
 
 void unionListAndInterListText(void) {
+    // 测试链表的交并集操作
     List l1, l2;
     initList(&l1);
     initList(&l2);

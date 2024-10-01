@@ -2,6 +2,7 @@
 #include "list_more_func.h"
 #include <stdio.h>
 
+// 计算两个链表的并集
 List ListsUnion(const List list_1, const List list_2) {
     ptrToNode list_1_start = list_1->next;
     ptrToNode list_2_start = list_2->next;
@@ -60,6 +61,7 @@ List ListsUnion(const List list_1, const List list_2) {
     return result;
 }
 
+// 计算两个链表的交集
 List ListsIntersect(const List list_1, const List list_2) {
     ptrToNode list_1_temp = list_1->next;
     ptrToNode list_2_temp = list_2->next;
