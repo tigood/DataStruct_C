@@ -25,3 +25,14 @@
 <a href="https://github.com/tigood/DataStruct_C/blob/main/list_adt/include/list_more_func.h">list_more_func.h(功能头文件)</a>
 <br/>
 <a href="https://github.com/tigood/DataStruct_C/blob/main/list_adt/src/main.c">功能测试文件</a>
+
+
+
+### 3.6 and 3.7 and 3.8
+
+多项式的实现以及相关的操作：
+
+实现代码文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/list_adt/src/polynomial.c">polynomial.c</a>
+
+
+

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define MAX_DEGREE 100
 
 // 多项式的常规ADT写法
 // 其中CoeffArray是一个存储系数的数组，MaxDegree是表示该多项式的最高可能次
@@ -56,6 +57,8 @@ Polynomial_Item CreateNode(ElementType item);
 // 前置条件：传入一个指向多项式的指针，和一个要添加的元素
 void AddItem(Polynomial *Poly, ElementType item);
 
+void AddItemPlus(Polynomial *Poly, ElementType item);
+
 // 输出多项式
 // 前置条件：输入一个初始化的多项式
 // 后值条件：将这个多项式的值打印出来
@@ -66,10 +69,18 @@ void PrintfPoly(Polynomial Poly);
 // 后置条件：将这两个多项式的和的指针赋值第三个指针
 void AddPolynomials(Polynomial p1, Polynomial p2, Polynomial *sum);
 
-// 将两个多项式相乘
+// 将两个多项式相乘（时间复杂度O(N^2 * M^2)）
 // 前置条件：传入两个多项式，和一个指向已经初始化多项式的指针
 // 后置条件：将这个两个多项式的乘积
 void MultPolynomials(Polynomial p1, Polynomial p2, Polynomial *result);
+
+// 多项式相乘的优化版本（时间复杂度O(M^2 * N)）
+void MultPolynomialsPlus(Polynomial p1, Polynomial p2, Polynomial *result);
+
+// 计算多项式的幂
+// 前置条件：传入一个多项式，和幂次数
+// 后置条件：返回一个多项式，为结果
+Polynomial FastPower(Polynomial F, int p);
 
 int main()
 {
@@ -191,6 +202,7 @@ void AddPolynomials(Polynomial p1, Polynomial p2, Polynomial *sum) {
     }
 }
 
+// 这个相乘的时间复杂度是O(n^2 * m^2)的
 void MultPolynomials(Polynomial p1, Polynomial p2, Polynomial *result) {
     // 清空result多项式
     ZeroPolynomial(result);
@@ -214,4 +226,72 @@ void MultPolynomials(Polynomial p1, Polynomial p2, Polynomial *result) {
         }
         p1 = p1->next;
     }
+}
+
+// 相乘优化思路，使用一个数组存储相乘产生的结果
+// 等最后全部计算完毕之后，这个数组中的下标就代表每一项的次数
+// 这样这个数组中的式子就是有序的，在存储的时候就不需要遍历链表了，只需要m
+void MultPolynomialsPlus(Polynomial p1, Polynomial p2, Polynomial *result) {
+    // 初始化数组
+    int coeffs[MAX_DEGREE + 1] = {0};
+    // 获取第一个多项式的有效值
+    p1 = p1->next;
+
+    // 通过循环来计算乘积
+    while (p1 != NULL) {
+        // 通过一个临时值获取第二个多项式中的值
+        Polynomial_Item temp = p2->next;
+        while (temp != NULL) {
+            // 计算新项的次数
+            int newExponent = p1->item.Exponent + temp->item.Exponent;
+            coeffs[newExponent] += p1->item.Coefficient * temp->item.Coefficient;
+            temp = temp->next;
+        }
+        p1 = p1->next;
+    }
+
+    // 将结果一次性存储到链表中
+    // 清空result多项式
+    ZeroPolynomial(result);
+    for (int i = MAX_DEGREE; i >= 0; i--) {
+        // 只添加非零系数
+        if (coeffs[i] != 0) {
+            AddItem(result, (ElementType){coeffs[i], i});
+        }
+    }
+}
+
+
+// 优化方案二：将时间复杂度优化为O(M * N * log(MN))
+// 思路：由于是两个多项式相乘的功能，所以相乘的两层循环是不可避免的，即M * N
+//      要继续优化时间复杂度只能在AddItem上面做文章了，但是单链表有许多限制，所以我们需要通过二叉树或者跳表实现，这样这个一块就是对数级别的时间复杂度
+// 上述的实现不需要通过修改MultPolynomials()方法，我们只需要对AddItem()方法
+void AddItemPlus(Polynomial *Poly, ElementType item) {
+
+}
+
+// 使用快速幂法计算多项式的幂
+Polynomial FastPower(Polynomial F, int p) {
+    if (p == 0) {
+        ElementType item = {1, 0}; // 代表常数1
+        Polynomial result;
+        InitPolynomial(&result);
+        AddItem(&result, item);
+        return result;
+    }
+    if (p == 1) {
+        return F;
+    }
+
+    Polynomial halfPower = FastPower(F, p / 2);
+    Polynomial result;
+    MultPolynomials(halfPower, halfPower, &result);
+
+    if (p % 2 != 0) {
+        Polynomial temp;
+        MultPolynomials(result, F, &temp);
+        return temp;
+    }
+    
+    return result;
 }
