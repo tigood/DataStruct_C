@@ -58,3 +58,31 @@
 
 
 
+### 3.11 and 3.12
+
+代码实现文件：
+
+<a href="https://github.com/tigood/DataStruct_C/blob/main/list_adt/src/list.c">list.c</a>
+
+3.12反转的另一种实现方式：
+
+这种实现方式也可以，不过我没有在代码实现文件中写这一种，代码如下，可以参考代码研究一下思路。
+
+```c
+List ReverseList(List l) {
+    Position CurrentPos, NextPos, PreviousPos;
+    
+    PreviousPos = NULL;
+    CurrentPos = l; // 当前指向链表头
+    while (CurrentPos != NULL) { // 只要当前节点不为 NULL
+        NextPos = CurrentPos->next; // 保存当前节点的下一个节点
+        CurrentPos->next = PreviousPos; // 反转当前节点的指针
+        PreviousPos = CurrentPos; // 移动 PreviousPos 到当前节点
+        CurrentPos = NextPos; // 移动到下一个节点
+    }
+    return PreviousPos; // 返回新的头节点（原链表的最后一个节点）
+}
+```
+
+
+
