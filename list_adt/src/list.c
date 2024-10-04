@@ -201,3 +201,19 @@ void exchangeByPtr(List l, int index) {
     temp->next = ptrPreNode->next;
     ptrPreNode->next = temp;
 }
+
+// 通过递归实现查找元素
+Position findByRecur(Item target, List *l) {
+    if (l == NULL) {
+        fprintf(stderr, "参数传递错误");
+        return NULL;
+    }
+    Position result = *l;
+    if (result->element == target) {
+        return result;
+    }
+    if (result->next == NULL) {
+        return NULL;
+    }
+    return findByRecur(target, result->next);
+}
