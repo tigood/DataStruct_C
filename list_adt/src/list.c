@@ -205,7 +205,7 @@ void exchangeByPtr(List l, int index) {
 // 通过递归实现查找元素
 Position findByRecur(Item target, List *l) {
     if (l == NULL) {
-        fprintf(stderr, "参数传递错误");
+        fprintf(stderr, "参数传递错误\n");
         return NULL;
     }
     Position result = *l;
@@ -215,5 +215,23 @@ Position findByRecur(Item target, List *l) {
     if (result->next == NULL) {
         return NULL;
     }
-    return findByRecur(target, result->next);
+    return findByRecur(target, &(result->next));
+}
+
+// 使用非递归的方法反转一个链表
+List ReverseList(const List l) {
+    if (l == NULL) {
+        fprintf(stderr, "参数传递错误!\n");
+        exit(EXIT_FAILURE);
+    }
+    // 创建并初始化一个链表
+    List result;
+    initList(&result);
+    // 获取到第一个有效节点
+    Position temp = l->next;
+    while (temp != NULL) {
+        insertItem(temp->element, &result, result);
+        temp = temp->next;
+    }
+    return result;
 }

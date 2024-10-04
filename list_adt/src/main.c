@@ -69,9 +69,29 @@ void unionListAndInterListText(void) {
     DisposeList(insert_result);
 }
 
+// 测试链表反转功能的实现
+void ReverseListText(void) {
+    List l1;
+    List l2;
+    initList(&l1);
+    insertItem(1, &l1, l1);
+    insertItem(2, &l1, l1);
+    insertItem(3, &l1, l1);
+    // 测试
+    l2 = ReverseList(l1);
+    // 输出
+    printf("l1: \n");
+    forList(l1);
+    printf("l2: \n");
+    forList(l2);
+    DisposeList(l1);
+    DisposeList(l2);
+}
+
 int main()
 {
     // exchange_elem_text();
-    unionListAndInterListText();
+    // unionListAndInterListText();
+    ReverseListText();
     return 0;
 }

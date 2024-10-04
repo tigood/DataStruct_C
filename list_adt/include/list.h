@@ -100,4 +100,9 @@ void makeEmpty(List *plist);
 // 后值条件：释放该链表例程
 void DisposeList(List l);
 
+// 反转单链表（使用非递归的方法）
+// 前置条件：传入一个单链表
+// 后置条件：返回该单链表的逆转链表
+List ReverseList(const List l);
+
 #endif
