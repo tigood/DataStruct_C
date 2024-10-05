@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 void arr_text(void) {
-        SelfAdjustArr arr;
+    SelfAdjustArr arr;
     InitSelfAdjustArr(&arr, 10);
 
     // 插入一些元素
