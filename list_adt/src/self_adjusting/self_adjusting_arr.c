@@ -119,3 +119,26 @@ bool Find(ElementType target, SelfAdjustArr * sa_arr) {
     printf("元素插入成功！\n");
     return true;
 }
+
+// 返回表头元素
+ElementType Front(SelfAdjustArr *sa_arr) {
+    ArgIsNull(sa_arr);
+
+    if (!IsEmpty(sa_arr)) {
+        return sa_arr->Elements[sa_arr->Front];
+    } else {
+        fprintf(stderr, "表为空，返回失败！\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+ElementType Rear(SelfAdjustArr *sa_arr) {
+    ArgIsNull(sa_arr);
+
+    if (!IsEmpty(sa_arr)) {
+        return sa_arr->Elements[sa_arr->Rear];
+    } else {
+        printf(stderr, "表为空，返回失败！\n");
+        exit(EXIT_FAILURE);
+    }
+}
