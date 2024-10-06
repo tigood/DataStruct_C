@@ -1,6 +1,6 @@
-#include "list_lazy_del.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/list_lazy_del.h"
 
 // 参数合法性检测
 void arg_is_null(List l) {

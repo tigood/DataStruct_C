@@ -132,4 +132,8 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 **b**.
 
-实现头文件:
+实现头文件：<a href="https://github.com/tigood/DataStruct_C/unit_3_exs/3.17/include/list_lazy_del.h">list_lazy_del.h</a>
+
+实现代码文件：<a href="https://github.com/tigood/DataStruct_C/unit_3_exs/3.17/src/list_lazy_del.c">list_lazy_del.c</a>
+
+测试文件：<a href="https://github.com/tigood/DataStruct_C/unit_3_exs/3.17/src/test.c">test.c</a>

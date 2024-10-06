@@ -1,4 +1,4 @@
-#include "list_lazy_del.h"
+#include "../include/list_lazy_del.h"
 #include <stdio.h>
 #include <stdlib.h>
 
