@@ -150,4 +150,15 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 ### 3.19
 
-实现代：
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/stack_adt/src/calcuation_text/calcuation.c">calcuation.c</a>
+
+### 3.20
+
+**a** and **b**.
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/stack_adt/src/calcuation_text/calcuation.c">calcuation.c</a>
+
+**c**.
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/stack_adt/src/suffix_to_infix.c">suffix_to_infix.c</a>
+
