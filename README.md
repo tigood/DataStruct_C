@@ -137,3 +137,13 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 实现代码文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.17/src/list_lazy_del.c">list_lazy_del.c</a>
 
 测试文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.17/src/test.c">test.c</a>
+
+### 3.18
+
+**a**.
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.18/src/check_balanced_func.c">check_balanced_func.c</a>
+
+**b**.
+
+> 如果打印错误的信息，在我上面的代码中有体现，可以查阅代码研究一下，如果您有更好的错误提示方案，欢迎补充！
