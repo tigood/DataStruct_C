@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stack.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "list_lazy_del.h": "c"
     }
 }
