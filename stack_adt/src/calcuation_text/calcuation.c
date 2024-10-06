@@ -32,13 +32,42 @@ void eat_line(void) {
         continue;
 }
 
+// 幂运算符的辅助运算
+double fast_pow(double base, int exp) {
+    // 如果指数为0
+    if (exp == 0) {
+        return 1.0;
+    }
+
+    // 如果指数小于0
+    if (exp < 0) {
+        base = 1 / base;
+        exp = -exp;
+    }
+
+    double result = 1.0;
+    while (exp > 0)
+    {
+        // 如果指数为奇数
+        if (exp % 2 != 0) {
+            result *= base;
+        }
+        // 基数翻倍
+        base *= base;
+        // 指数减半，即 5^4 == 25^2
+        exp /= 2;
+    }
+
+    return result;
+}
+
 /*
 方法的实现
 */
 
 // 判断字符是否为运算符
 bool isOperator(char ch) {
-    if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')')
+    if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')' || ch == '^')
         return true;
     return false;
 }
@@ -61,6 +90,8 @@ int getPrecedence(char ch) {
         case '*':
         case '/':
             return 2;
+        case '^':
+            return 3;
         default:
             return 0; // 默认的最低优先级
     }
@@ -148,9 +179,9 @@ char *infixToSuffix(const char *per){
     return result_str;
 }
 
-int calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
-    int inum1 = atoi(num1);
-    int inum2 = atoi(num2);
+double calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
+    double inum1 = atoi(num1);
+    double inum2 = atoi(num2);
     if (strcmp(oper, "+") == 0)
     {
         return inum1 + inum2;
@@ -167,12 +198,16 @@ int calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
     {
         return inum1 / inum2;
     }
+    else if (strcmp(oper, "^") == 0)
+    {
+        return fast_pow(inum1, inum2);
+    }
     // 默认返回
-    return 0;
+    return 0.0;
 }
 
 // 计算后缀表达式的值
-int calcuationBySuffix(const char *formula) {
+double calcuationBySuffix(const char *formula) {
     // 创建一个栈
     // 遇到操作数，就将操作数压入栈中
     // 遇到运算符，就在栈中弹出两个操作数进行计算
@@ -197,20 +232,20 @@ int calcuationBySuffix(const char *formula) {
             // 如果是一个操作符就从栈中弹出两个数计算
             char *num1 = Pop(operand_stack);
             char *num2 = Pop(operand_stack);
-            int cal_result = calcuation_two_nums(num1, num2, formualStr);
+            double cal_result = calcuation_two_nums(num1, num2, formualStr);
             free(num1);
             free(num2);
             free(formualStr);
             // 将计算的结果转换为字符串，然后重新存入栈中
             char resultStr[20];
-            snprintf(resultStr, sizeof(resultStr), "%d", cal_result);
+            snprintf(resultStr, sizeof(resultStr), "%.2f", cal_result);
             Push(operand_stack, resultStr);
         }
         temp_formula++;
     }
     // 执行完毕之后将最后的结果从栈中取出来
     char *result = Pop(operand_stack);
-    int iresult = atoi(result);
+    double iresult = atoi(result);
     free(result);
     DisposeStack(operand_stack);
     return iresult;
@@ -235,8 +270,8 @@ void cal_sys_run(void) {
             break;
         }
         // 将输入的算式转换并计算
-        int result = calcuationBySuffix(infixToSuffix(userInput));
-        printf("运算结果为：%d\n", result);
+        double result = calcuationBySuffix(infixToSuffix(userInput));
+        printf("运算结果为：%.2f\n", result);
         printf("是否继续计算？(y/n)\n");
         char choose_ch = getchar();
         eat_line();
