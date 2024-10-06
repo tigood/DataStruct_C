@@ -97,6 +97,7 @@ int getPrecedence(char ch) {
     }
 }
 
+// 中缀表达式变为后缀表达式
 char *infixToSuffix(const char *per){
     // 创建一个栈用来存储运算符
     Stack oper_stack = CreateStack();
@@ -179,6 +180,7 @@ char *infixToSuffix(const char *per){
     return result_str;
 }
 
+// 根据运算符计算两个整数
 double calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
     double inum1 = atoi(num1);
     double inum2 = atoi(num2);
