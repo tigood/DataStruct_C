@@ -39,4 +39,16 @@ ElementType pop_1(TwoStacks *);
 
 // 在第二个栈顶弹出元素
 ElementType pop_2(TwoStacks *);
+
+// 附加功能：找到栈中的最小元素，即返回栈二的顶部元素
+ElementType find_min(TwoStacks *two_stacks);
+
+// 在栈中添加元素
+void push(ElementType elem, TwoStacks *two_stacks);
+
+// 在栈中弹出元素
+ElementType pop(TwoStacks *two_stacks);
+
+// 返回栈顶元素
+ElementType top(TwoStacks *two_stacks);
 #endif
