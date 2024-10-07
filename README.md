@@ -162,3 +162,53 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/stack_adt/src/suffix_to_infix.c">suffix_to_infix.c</a>
 
+### 3.21
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.21/src/two_stacks_by_one_arr.c">two_stacks_by_one_ayy.c</a>
+
+头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.21/include/two_stacks_by_one_arr.h">two_stacks_by_one_arr.h</a>
+
+### 3.22
+
+**a**.
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.21/src/two_stacks_by_one_arr.c">two_stacks_by_one_ayy.c</a>
+
+头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.21/include/two_stacks_by_one_arr.h">two_stacks_by_one_arr.h</a>
+
+**b**.
+
+> 这个证明需要第七章中排序一定会花费 时间的结论。进行O(N)次的取出最小元素(FindMin)+压入另一个栈(Push)+删除最小元素(DeleteMin)，可以完成排序，所以一次FindMin+Push+DeleteMin操作的时间界为，所以它们三个不能同时需要O(1)时间。
+
+### 3.23
+
+> 三个栈可以通过如下方式实现：一个从数组底端向上增长，一个从数组顶端向下增长，第三个可以从中间开始，向某个方向增长。如果第三个栈和其他两个栈中的一个冲突，就需要移动它。一个合理的策略是把它移动到使它的中心距其他两个栈栈顶元素相等的位置。
+
+### 3.24
+
+> 栈空间不会用完，因为只有49次调用储存在栈空间中。然而，如第二章所述，它的运行时间是指数型的，因此例程不会在合理的时间内结束。
+>
+> 栈的深度最多的一刻到了49，所以不会用完
+
+### 3.25
+
+**a**.
+
+队列的链表实现：
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/queue_adt/src/queue_list.c">queue_list.c</a>
+
+实现头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/queue_adt/include/queue_list.h">queue_list.h</a>
+
+**b**.
+
+队列的数组实现：
+
+实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/queue_adt/src/queue_arr.c">queue_arr.c</a>
+
+实现头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/queue_adt/include/queue_arr.h">queue_arr.h</a>
+
+### 3.26
+
+
+
