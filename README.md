@@ -210,5 +210,9 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 ### 3.26
 
+实现代码文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.26/src/deque.c">deque.c</a>
+
+实现代码头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_3_exs/3.26/include/deque.h">deque.h</a>
+
 
 
