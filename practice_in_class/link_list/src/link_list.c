@@ -383,27 +383,78 @@ LinkList combine_lists(LinkList list_1, LinkList list_2) {
     LinkList result_list = list_1;
     ptrToNode l1_node = list_1->next;
     ptrToNode l2_node = list_2->next;
-    ptrToNode curr = result_list->next;
     ptrToNode prev = result_list;
 
     while (l1_node != NULL && l2_node != NULL) {
         if (l1_node->elem < l2_node->elem) {
             // 添加链表1中的元素
             prev->next = l1_node;
-            curr = l1_node;
             l1_node = l1_node->next;
         } else {
             // 添加链表2中的元素
             prev->next = l2_node;
-            curr = l2_node;
             l2_node = l2_node->next;
         }
+        prev = prev->next;
     }
 
     // 添加剩余的链
-    curr->next = l1_node ? l1_node : l2_node;
+    prev->next = l1_node ? l1_node : l2_node;
     // 释放链表2头节点
     free(list_2);
 
     return result_list;
+}
+
+// 逆置链表
+void reverse_list(LinkList list) {
+    // 检测参数合法性
+    arg_is_null(list);
+
+    ptrToNode curr = list->next;
+    ptrToNode prev;
+    list->next = NULL;
+    while (curr) {
+        prev = curr;
+        curr = curr->next;
+        prev->next = list->next;
+        list->next = prev;
+    }
+}
+
+// 销毁一个链表
+bool dispose_list(LinkList *p_list) {
+    // 检测参数合法性
+    arg_is_null(p_list);
+
+    ptrToNode prev = *p_list;
+    ptrToNode curr = (*p_list)->next;
+    while (curr != NULL) {
+        free(prev);  // 释放前置节点
+        prev = curr;  // 移动前置节点
+        curr = curr->next;  // 前移当前节点
+    }
+    // 释放最后一个节点
+    free(prev);
+
+    // 重置指针
+    *p_list = NULL;
+
+    return true;
+}
+
+// 返回链表的长度
+int list_length(LinkList list) {
+    // 参数合法性检测
+    arg_is_null(list);
+
+    int counts = 0;
+
+    ptrToNode curr = list->next;
+    while (curr != NULL) {
+        counts++;
+        curr = curr->next;
+    }
+
+    return counts;
 }
