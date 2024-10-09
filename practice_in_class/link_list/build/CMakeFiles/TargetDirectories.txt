@@ -1,0 +1,3 @@
+/home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/build/CMakeFiles/link_list_run.dir
+/home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/build/CMakeFiles/edit_cache.dir
+/home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/link_list_run.dir/home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/src/link_list.c.o CMakeFiles/link_list_run.dir/home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/src/main.c.o -o /home/tigood/myCode/cCode/shujujiegou/practice_in_class/link_list/bin/link_list_run 
