@@ -16,6 +16,7 @@ int choose_menu_func() {
     printf("----------------- 9.   逆序 ------------------\n");
     printf("----------------- 0.   退出 ------------------\n");
     scanf("%d", &choose);
+    getchar();
     return choose;
 }
 
@@ -61,6 +62,7 @@ void test_find_item(LinkList list) {
     printf("请选择查找方式：A按序号查找  B按值查找\n");
     char select;
     int position, result, target;
+    scanf("%c", &select);
     switch (select)
     {
     case 'A':
@@ -81,6 +83,7 @@ void test_find_item(LinkList list) {
         } else {
             printf("数值为%d的元素不存在\n", target);
         }
+        break;
     default:
         printf("只有A B两个选项");
         break;
@@ -140,7 +143,6 @@ void test_delete(LinkList list) {
             printf("删除失败，未找到指定数值元素！\n");
         }
         break;
-    
     default:
         printf("选项只有A B C\n");
         break;
