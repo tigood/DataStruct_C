@@ -99,13 +99,13 @@ SearchTree delete_elem(ElementType target, SearchTree search_tree) {
     Position tempNode;
     // 处理子树为空的情况
     if (search_tree == NULL) {
-        printf(stderr, "未查找到指定元素");
+        fprintf(stderr, "未查找到指定元素");
     } else if (target < search_tree->elem) {
         // 说明目标节点在左子树
-        search_tree = delete_elem(target, search_tree->left);
+        search_tree->left = delete_elem(target, search_tree->left);
     } else if (target > search_tree->elem) {
         // 说明目标节点在右子树
-        search_tree = delete_elem(target, search_tree->right);
+        search_tree->right = delete_elem(target, search_tree->right);
     } else if (search_tree->left && search_tree->right) {
         // 走到这里说明找到了目标节点，并且它有两个子结点
         // 处理思路是，用它的右子树中最小的元素来代替它
