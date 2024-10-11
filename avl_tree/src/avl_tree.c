@@ -29,3 +29,26 @@ AvlTree make_empty(AvlTree avl_tree) {
 
     return NULL;
 }
+
+// 查找目标节点
+Position find(ElementType target, AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        printf("未找到指定元素:%d\n", target);
+        return NULL;
+    }
+    else if (target < retrieve(avl_tree))
+    {
+        // 目标节点小于当前节点的值，那就去左子树中继续找
+        return find(target, avl_tree->left);
+    }
+    else if (target > retrieve(avl_tree))
+    {
+        // 目标节点大于当前节点的值，那就去右子树中继续找
+        return find(target, avl_tree->right);
+    }
+    else
+    {
+        // 走到这里就说明是找到了
+        return avl_tree;
+    }
+}

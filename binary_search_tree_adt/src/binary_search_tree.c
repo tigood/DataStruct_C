@@ -26,7 +26,7 @@ Position find(ElementType target, SearchTree search_tree) {
     // 首先对二叉查找树进行非空判断
     if (search_tree == NULL)
         return NULL;
-    if (search_tree->elem < target)
+    else if (search_tree->elem < target)
     {
         // 如果当前节点值小于目标值，那么就继续查当前节点的右子树
         return find(target, search_tree->right);
