@@ -1,6 +1,6 @@
-#include "avl_tree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "avl_tree.h"
 
 struct AvlNode {
     ElementType elem;
@@ -50,5 +50,17 @@ Position find(ElementType target, AvlTree avl_tree) {
     {
         // 走到这里就说明是找到了
         return avl_tree;
+    }
+}
+
+// 查找最小值
+Position find_min(AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        // 非空检测
+        return NULL;
+    } else if (avl_tree->left == NULL) {
+        return avl_tree;
+    } else {
+        return find_min(avl_tree->left);
     }
 }
