@@ -366,3 +366,12 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 > ```
 >
 > 
+
+### 4.10
+
+> 代码实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/binary_search_tree_adt/src/binary_search_tree.c">binary_search_tree.c</a>
+>
+> 头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/binary_search_tree_adt/include/binary_search_tree.h">binary_search_tree.h</a>
+
+### 4.11
+

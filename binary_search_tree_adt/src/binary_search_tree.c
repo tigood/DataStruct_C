@@ -18,7 +18,7 @@ SearchTree make_empty(SearchTree search_tree) {
         free(search_tree);
     }
 
-    return NULL;
+    return search_tree;
 }
 
 // 在一个二叉查找树中查找一个元素
