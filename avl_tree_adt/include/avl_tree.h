@@ -35,6 +35,11 @@ Position find_max(AvlTree);
 // 后置条件：将该值插入在avl树中合理的位置
 AvlTree insert_elem(ElementType, AvlTree);
 
+// 插入一个元素的非递归实现
+// 前置条件：传入一个目标节点值和一个avl树的指针
+// 后置条件：将该值插入在这个avl树的合理位置
+void insert_elem_nr(ElementType, AvlTree);
+
 // 删除一个元素
 // 前置条件：传入一个目标值和一个avl树
 // 后置条件：如果该值存在，删除该节点，否则什么也不做

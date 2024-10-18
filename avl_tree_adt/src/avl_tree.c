@@ -209,3 +209,92 @@ ElementType retrieve(Position node) {
 
     return node->elem;
 }
+
+// 插入元素的非递归实现
+AvlTree insert_elem_nr(ElementType elem, AvlTree avl_tree) {
+    // 定义一个栈来追踪插入路径
+    AvlTree stack[100];
+    int top = -1;
+    Position parent = NULL;
+    Position current = avl_tree;
+
+    // 创建一个新节点
+    AvlTree new_node = (AvlTree)malloc(sizeof(struct AvlNode));
+    if (new_node == NULL) {
+        // 说明空间开辟失败
+        fprintf(stderr, "空间开辟失败！\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // 初始化节点
+    new_node->elem = elem;
+    new_node->left = new_node->right = NULL;
+    new_node->height = 0;
+
+    // 寻找插入点
+    while (current != NULL) {
+        stack[++top] = current;
+        parent = current;
+        if (elem < retrieve(current)) {
+            current = current->left;
+        } else if (elem > retrieve(current)) {
+            current = current->right;
+        } else {
+            // 如果已经存在相同的值了，则不插入
+            return avl_tree;
+        }
+    }
+
+    // 插入新节点
+    if (parent == NULL) {
+        avl_tree = new_node;
+    } else if (elem < retrieve(parent)) {
+        parent->left = new_node;
+    } else {
+        parent->right = new_node;
+    }
+
+    // 自下而上调整树的平衡性
+    while (top >= 0) {
+        // 回溯节点
+        current = stack[top--];
+
+        // 更新当前节点的高度
+        current->height = max(height(current->left), height(current->right)) + 1;
+
+        // 检查当前节点是否平衡
+        if (height(current->left) - height(current->right) == 2) {
+            // 走到这里说明，节点不平衡，且是在左子树插入之后不平衡的
+            if (elem < retrieve(current->left)) {
+                // 走到这里，说明是左-左单旋转
+                current = single_rotate_with_left(current);
+            } else {
+                // 左-右双旋转
+                current = double_rotate_with_left(current);
+            }
+        } else if (height(current->right) - height(current->left) == 2) {
+            // 走到这里说明，节点不平衡，且是在右子树插入之后不平衡的
+            if (elem > retrieve(current->right)) {
+                // 右-右单旋转
+                current = signle_rotate_whit_right(current);
+            } else {
+                // 右-左单旋转
+                current = double_rotate_with_right(current);
+            }
+        }
+    }
+
+    // 将旋转之后的节点，与父节点重新连接
+    if (top >= 0) {
+        if (current->elem < retrieve(stack[top])) {
+            stack[top]->left = current;
+        } else {
+            stack[top]->right = current;
+        }
+    } else {
+        // 走到这里就说明，父节点是根节点了
+        avl_tree = current;
+    }
+
+    return avl_tree;
+}
