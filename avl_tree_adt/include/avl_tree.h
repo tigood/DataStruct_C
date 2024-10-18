@@ -38,12 +38,17 @@ AvlTree insert_elem(ElementType, AvlTree);
 // 插入一个元素的非递归实现
 // 前置条件：传入一个目标节点值和一个avl树的指针
 // 后置条件：将该值插入在这个avl树的合理位置
-void insert_elem_nr(ElementType, AvlTree);
+AvlTree insert_elem_nr(ElementType, AvlTree);
 
 // 删除一个元素
 // 前置条件：传入一个目标值和一个avl树
 // 后置条件：如果该值存在，删除该节点，否则什么也不做
 AvlTree delete_elem(ElementType, AvlTree);
+
+// 删除一个元素的非递归实现
+// 前置条件：传入一个目标值和一个avl树
+// 后置条件：如果该值存在，删除该节点，否则什么也不做
+AvlTree delete_elem_nr(ElementType, AvlTree);
 
 // 获取节点的值
 // 前置条件：传入一个树节点

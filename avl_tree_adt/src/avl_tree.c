@@ -298,3 +298,125 @@ AvlTree insert_elem_nr(ElementType elem, AvlTree avl_tree) {
 
     return avl_tree;
 }
+
+// 删除一个元素的非递归实现
+AvlTree delete_elem_nr(ElementType target, AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        // 提示用户未查找到指定亚unsu
+        fprintf(stderr, "未查找到指定元素！\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // 定义一个栈追踪路径
+    AvlTree stack[100];
+    int top = -1;
+    Position parent = NULL;
+    Position current = avl_tree;
+    Position target_position = NULL;
+
+    // 查找到要删除的节点
+    while (current != NULL) {
+        stack[++top] = current;
+        if (target < retrieve(current)) {
+            parent = current;
+            current = current->left;
+        } else if (target > retrieve(current)) {
+            parent = current;
+            current = current->right;
+        } else {
+            // 找到了待删除的节点
+            target_position = current;
+            // 退出循环
+            break;
+        }
+    }
+
+    // 如果没有找到目标节点
+    if (target == NULL) {
+        printf("未找到指定要删除的元素！\n");
+        return avl_tree;
+    }
+
+    // 删除节点，并调整树结构
+    if (target_position->left && target_position->right) {
+        // 走到这里说明，有两个子节点
+        // 找到右子树中的最小节点替换
+        AvlTree successor = current->right, successor_parent = current;
+        while (successor->left != NULL) {
+            stack[++top] = successor;
+            successor_parent = successor;
+            successor = successor->left;
+        }
+
+        // 替换值
+        current->elem = successor->elem;
+        // 删除最小的节点
+        if (successor_parent->left = successor) {
+            successor_parent->left = successor_parent->right;
+        } else {
+            successor_parent->right = successor->right;
+        }
+
+        free(successor);
+    }
+    else
+    {
+        // 走到这里说明只有一个节点
+        AvlTree new_child = current->left ? current->left : current->right;
+        if (parent == NULL){
+            // 没有父元素
+            avl_tree = new_child;
+        } else if (parent->left == current) {
+            parent->left = new_child;
+        } else {
+            parent->right = new_child;
+        }
+
+        // 释放节点
+        free(current);
+    }
+
+    // 自下而上调整树的平衡性
+    while (top >= 0) {
+        // 回溯节点
+        current = stack[top--];
+
+        // 更新当前节点的高度
+        current->height = max(height(current->left), height(current->right)) + 1;
+
+        // 检查当前节点是否平衡
+        if (height(current->left) - height(current->right) == 2) {
+            // 走到这里说明，节点不平衡，且是在左子树插入之后不平衡的
+            if (elem < retrieve(current->left)) {
+                // 走到这里，说明是左-左单旋转
+                current = single_rotate_with_left(current);
+            } else {
+                // 左-右双旋转
+                current = double_rotate_with_left(current);
+            }
+        } else if (height(current->right) - height(current->left) == 2) {
+            // 走到这里说明，节点不平衡，且是在右子树插入之后不平衡的
+            if (elem > retrieve(current->right)) {
+                // 右-右单旋转
+                current = signle_rotate_whit_right(current);
+            } else {
+                // 右-左单旋转
+                current = double_rotate_with_right(current);
+            }
+        }
+    }
+
+    // 将旋转之后的节点，与父节点重新连接
+    if (top >= 0) {
+        if (current->elem < retrieve(stack[top])) {
+            stack[top]->left = current;
+        } else {
+            stack[top]->right = current;
+        }
+    } else {
+        // 走到这里就说明，父节点是根节点了
+        avl_tree = current;
+    }
+
+    return avl_tree;
+}
