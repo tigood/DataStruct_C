@@ -332,7 +332,7 @@ AvlTree delete_elem_nr(ElementType target, AvlTree avl_tree) {
     }
 
     // 如果没有找到目标节点
-    if (target == NULL) {
+    if (target_position == NULL) {
         printf("未找到指定要删除的元素！\n");
         return avl_tree;
     }
@@ -352,7 +352,7 @@ AvlTree delete_elem_nr(ElementType target, AvlTree avl_tree) {
         current->elem = successor->elem;
         // 删除最小的节点
         if (successor_parent->left = successor) {
-            successor_parent->left = successor_parent->right;
+            successor_parent->left = successor->right;
         } else {
             successor_parent->right = successor->right;
         }
@@ -387,7 +387,7 @@ AvlTree delete_elem_nr(ElementType target, AvlTree avl_tree) {
         // 检查当前节点是否平衡
         if (height(current->left) - height(current->right) == 2) {
             // 走到这里说明，节点不平衡，且是在左子树插入之后不平衡的
-            if (elem < retrieve(current->left)) {
+            if (target < retrieve(current->left)) {
                 // 走到这里，说明是左-左单旋转
                 current = single_rotate_with_left(current);
             } else {
@@ -396,7 +396,7 @@ AvlTree delete_elem_nr(ElementType target, AvlTree avl_tree) {
             }
         } else if (height(current->right) - height(current->left) == 2) {
             // 走到这里说明，节点不平衡，且是在右子树插入之后不平衡的
-            if (elem > retrieve(current->right)) {
+            if (target > retrieve(current->right)) {
                 // 右-右单旋转
                 current = signle_rotate_whit_right(current);
             } else {
