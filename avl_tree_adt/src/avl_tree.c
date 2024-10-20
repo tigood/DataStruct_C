@@ -390,3 +390,35 @@ void print_tree(AvlTree tree) {
         print_tree(tree->right);
     }
 }
+
+// 计算书中节点个树
+int count_tree_nodes(AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        return 0;
+    }
+    return 1 + count_tree_node(avl_tree->left) + count_tree_node(avl_tree->right);
+}
+
+// 计算树中有几个叶子节点
+int count_tree_leaves(AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        return 0;
+    } else if (avl_tree->left = NULL && avl_tree->right == NULL) {
+        return 1;
+    } else {
+        return count_tree_leaves(avl_tree->left) + count_tree_leaves(avl_tree->right);
+    }
+}
+
+// 计算树中有几个满节点
+int counts_tree_full_nodes(AvlTree avl_tree) {
+    if (avl_tree == NULL) {
+        return 0;
+    } else if (avl_tree->left && avl_tree->right) {
+        return 1;
+    } else {
+        return count_tree_full_nodes(avl_tree->left) + count_tree_full_nodes(avl_tree->right);
+    }
+    // 或者写成这样
+    // return (avl_tree->left && avl_tree->right) + count_tree_full_nodes(avl_tree->left) + count_tree_full_nodes(avl_tree_right)
+}

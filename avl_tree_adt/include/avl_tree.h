@@ -55,6 +55,20 @@ AvlTree delete_elem_nr(ElementType, AvlTree);
 // 后置条件：返回该节点的值
 ElementType retrieve(Position);
 
+// 按中序打印
+// 前置条件：传入一个树
+// 后置条件：将该树中的元素打印出来
 void print_tree(AvlTree);
+
+// 计算树中节点个树
+// 前置条件：传入一个树
+// 后置条件：计算该树中的所有节点
+int count_tree_nodes(AvlTree);
+
+// 计算树中有几个叶子节点
+int count_tree_leaves(AvlTree);
+
+// 计算树中满节点的数量
+int count_tree_full_nodes(AvlTree);
 
 #endif
