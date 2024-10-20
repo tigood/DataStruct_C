@@ -68,6 +68,24 @@ static Position double_rotate_with_left(Position k3) {
     return single_rotate_with_left(k3);
 }
 
+static Position double_rotate_with_left_plus(Position k3) {
+    Position k1, k2;
+    k1 = k3->left;
+    k2 = k1->right;
+
+    // 重构
+    k1->right = k2->left;
+    k3->left = k2->right;
+    k2->left = k1;
+    k2->right = k3;
+    // 更新高度
+    k1->height = max(height(k1->left), height(k1->right)) + 1;
+    k3->height = max(height(k3->left), height(k3->right)) + 1;
+    k2 = max(height(k1), height(k3)) + 1;
+
+    return k2;
+}
+
 // 该节点失衡是因为在右子树的左子树中插入节点导致的 即 右-左双旋转
 /*仅当k3有一个右子树k1，并且k1有一个左子树k2的时候才可以调用该函数*/
 /*更新高度，并且返回一个新的节点*/
