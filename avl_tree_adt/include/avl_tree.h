@@ -55,4 +55,6 @@ AvlTree delete_elem_nr(ElementType, AvlTree);
 // 后置条件：返回该节点的值
 ElementType retrieve(Position);
 
+void print_tree(AvlTree);
+
 #endif
