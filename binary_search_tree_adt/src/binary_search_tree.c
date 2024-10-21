@@ -2,12 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct TreeNode {
-    ElementType elem;  // 元素值
-    SearchTree left;  // 左子树
-    SearchTree right;  // 右子树
-};
-
 // 将一个二叉查树清空
 SearchTree make_empty(SearchTree search_tree) {
     // 首先对子树进行非空判断，防止进入左右子树的无限转换

@@ -3,13 +3,6 @@
 #include <stdlib.h>
 #include "avl_tree.h"
 
-struct AvlNode {
-    ElementType elem;
-    AvlTree left;
-    AvlTree right;
-    int height;
-};
-
 // 计算节点的高度 static函数，只能在当前源文件中使用
 static int height(Position p) {
     if (p == NULL) {
@@ -81,7 +74,7 @@ static Position double_rotate_with_left_plus(Position k3) {
     // 更新高度
     k1->height = max(height(k1->left), height(k1->right)) + 1;
     k3->height = max(height(k3->left), height(k3->right)) + 1;
-    k2 = max(height(k1), height(k3)) + 1;
+    k2->height = max(height(k1), height(k3)) + 1;
 
     return k2;
 }
@@ -396,14 +389,14 @@ int count_tree_nodes(AvlTree avl_tree) {
     if (avl_tree == NULL) {
         return 0;
     }
-    return 1 + count_tree_node(avl_tree->left) + count_tree_node(avl_tree->right);
+    return 1 + count_tree_nodes(avl_tree->left) + count_tree_nodes(avl_tree->right);
 }
 
 // 计算树中有几个叶子节点
 int count_tree_leaves(AvlTree avl_tree) {
     if (avl_tree == NULL) {
         return 0;
-    } else if (avl_tree->left = NULL && avl_tree->right == NULL) {
+    } else if (avl_tree->left == NULL && avl_tree->right == NULL) {
         return 1;
     } else {
         return count_tree_leaves(avl_tree->left) + count_tree_leaves(avl_tree->right);
@@ -411,7 +404,7 @@ int count_tree_leaves(AvlTree avl_tree) {
 }
 
 // 计算树中有几个满节点
-int counts_tree_full_nodes(AvlTree avl_tree) {
+int count_tree_full_nodes(AvlTree avl_tree) {
     if (avl_tree == NULL) {
         return 0;
     } else if (avl_tree->left && avl_tree->right) {

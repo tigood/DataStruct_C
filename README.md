@@ -593,4 +593,50 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 ### 4.28
 
-> 
+> 以下这三个实现的时间复杂度都是线性的
+>
+> ```c
+> // 计算书中节点个树
+> int count_tree_nodes(AvlTree avl_tree) {
+>     if (avl_tree == NULL) {
+>         return 0;
+>     }
+>     return 1 + count_tree_nodes(avl_tree->left) + count_tree_nodes(avl_tree->right);
+> }
+> ```
+>
+> ```c
+> // 计算树中有几个叶子节点
+> int count_tree_leaves(AvlTree avl_tree) {
+>     if (avl_tree == NULL) {
+>         return 0;
+>     } else if (avl_tree->left == NULL && avl_tree->right == NULL) {
+>         return 1;
+>     } else {
+>         return count_tree_leaves(avl_tree->left) + count_tree_leaves(avl_tree->right);
+>     }
+> }
+> ```
+>
+> ```c
+> // 计算树中有几个满节点
+> int count_tree_full_nodes(AvlTree avl_tree) {
+>     if (avl_tree == NULL) {
+>         return 0;
+>     } else if (avl_tree->left && avl_tree->right) {
+>         return 1;
+>     } else {
+>         return count_tree_full_nodes(avl_tree->left) + count_tree_full_nodes(avl_tree->right);
+>     }
+>     // 或者写成这样
+>     // return (avl_tree->left && avl_tree->right) + count_tree_full_nodes(avl_tree->left) + count_tree_full_nodes(avl_tree_right)
+> }
+> ```
+
+### 4.29
+
+> 例程的实现：<a href="">test.c</a>
+>
+> 时间复杂度的话，如果插入的序列是有序的，那么这就是最坏的结果，它的时间复杂度可以达到$O(n^2)$
+>
+> 如果是随机的话，那么每一个节点的平均插入时间复杂度可以达到$O(logn)$，所以一共就是$O(nlogn)$

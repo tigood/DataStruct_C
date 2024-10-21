@@ -10,6 +10,13 @@ typedef int ElementType;
 typedef struct AvlNode *Position;
 typedef struct AvlNode *AvlTree;
 
+struct AvlNode {
+    ElementType elem;
+    AvlTree left;
+    AvlTree right;
+    int height;
+};
+
 // 置空
 // 前置条件：传入一个avl树
 // 后置条件：该avl树被置空

@@ -9,6 +9,13 @@ typedef struct TreeNode *Position;
 typedef struct TreeNode *SearchTree;
 typedef int ElementType;
 
+struct TreeNode {
+    ElementType elem;  // 元素值
+    SearchTree left;  // 左子树
+    SearchTree right;  // 右子树
+};
+
+
 // 将一个二叉查找树清空
 // 前置条件：传入一个二叉查找树
 // 后置条件：清除该二叉查找树中的所有节点
