@@ -635,8 +635,60 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 ### 4.29
 
-> 例程的实现：<a href="">test.c</a>
+> 例程的实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.29/src/test.c">test.c</a>
 >
 > 时间复杂度的话，如果插入的序列是有序的，那么这就是最坏的结果，它的时间复杂度可以达到$O(n^2)$
 >
 > 如果是随机的话，那么每一个节点的平均插入时间复杂度可以达到$O(logn)$，所以一共就是$O(nlogn)$
+
+### 4.30
+
+> *该例程实现的是一个最少节点的avl二叉树*
+>
+> 即(核心伪代码如下)
+>
+> ```c
+> tree->left = generate_tree(height - 1);
+> tree->right = generate_tree(height - 2);
+> ```
+>
+> 例程的实现：<a herf="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.30/src/test.c">test.c</a>
+>
+> 时间复杂度为：$O(2^H)$ 其中H为高度
+>
+> 空间复杂度为：$O(H)$
+
+### 4.31
+
+> *该例程实现的是一个最多节点的avl二叉树*
+>
+> 即(核心伪代码如下)
+>
+> ```c
+> tree->left = generate_tree(height - 1);
+> tree->right = generate_tree(height - 1);
+> ```
+>
+> 例程的实现：<a herf="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.31/src/test.c">test.c</a>
+>
+> 时间复杂度为：$O(2^H)$ 其中H为高度
+>
+> 空间复杂度为：$O(H)$
+
+### 4.32
+
+> ```c
+> void print_range(ElementType lower, ElementType upper, SearchTree tree) {
+>     if (tree != NULL) {
+>         if (tree->elem >= lower) {
+>             print_range(lower, upper, tree->left);
+>         } else if (tree->elem >= lower && tree->elem <= upper) {
+>             printf("%d  ", tree->elem);
+>         } else if (tree->elem <= upper) {
+>             print_range(lower, upper, tree->right);
+>         }
+>     }
+> }
+> ```
+>
+> 这被称作一维搜索问题。如果有非常多的节点被输出，那么执行遍历的时间将是O(K)，另外，时间也和树的深度成正比，因为我们可能一直向下搜索到树叶（比如不存在符合条件的节点）。因树的深度平均为O(logN)，所以有O(K + logN)的时间界
