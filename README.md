@@ -692,3 +692,16 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 > ```
 >
 > 这被称作一维搜索问题。如果有非常多的节点被输出，那么执行遍历的时间将是O(K)，另外，时间也和树的深度成正比，因为我们可能一直向下搜索到树叶（比如不存在符合条件的节点）。因树的深度平均为O(logN)，所以有O(K + logN)的时间界
+
+### 4.33 and 4.34
+
+> 其中的一些证明很简单的，由于使用的前须遍历，所以先画当前节点，在左子树的节点，再右子树的节点，其中线条连接再中间完成。所以不会交叉的
+>
+> 看一看代码实现就理解了
+>
+> 头文件：<a herf="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.33/include/search_tree.h">search_tree.h</a>
+>
+> 实现代码文件：<a herf="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.33/src/search_tree.c">search_tree.c</a>
+
+### 4.35
+
