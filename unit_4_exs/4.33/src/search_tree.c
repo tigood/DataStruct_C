@@ -209,6 +209,6 @@ static void generate_instructions(SearchTree tree, int *current_index) {
 }
 
 void generate_tree_instructions(SearchTree tree) {
-    int current_index = 1; // 从0开始
+    int current_index = 1; // 从1开始
     generate_instructions(tree, &current_index);
 }
