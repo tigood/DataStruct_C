@@ -705,3 +705,16 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 
 ### 4.35
 
+> 代码实现：
+>
+> <a herf="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.35/src/main.c">main.c</a>
+
+### 4.36
+
+> **a.**
+>
+> ![](README.assets/4_36_a.png)
+>
+> **b.**
+>
+> ![](./README.assets/4_36_b.png)
