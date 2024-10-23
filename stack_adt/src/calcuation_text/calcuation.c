@@ -234,7 +234,7 @@ double calcuationBySuffix(const char *formula) {
             // 如果是一个操作符就从栈中弹出两个数计算
             char *num1 = Pop(operand_stack);
             char *num2 = Pop(operand_stack);
-            double cal_result = calcuation_two_nums(num1, num2, formualStr);
+            double cal_result = calcuation_two_nums(num2, num1, formualStr);
             free(num1);
             free(num2);
             free(formualStr);
