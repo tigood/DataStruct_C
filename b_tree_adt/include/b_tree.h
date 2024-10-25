@@ -44,4 +44,18 @@ void btree_create(BTree *, int);
 // 后置条件：该节点被分裂，结构变更
 void btree_split_child(BTree *tree, BTreeNode *node_parent, int i);
 
+/*
+树根节点没有满的时候插入  （辅助函数）
+*/
+// 前置条件：传入要插入的树， 传入要插入的节点，传入要插入的节点的key
+// 后置条件：该节点被成功的插入
+void btree_insert_nofull(BTree *tree, BTreeNode *target_node, KeyValue k_val);
+
+/*
+节点的插入
+*/
+// 前置条件：传入要插入的树，传入要插入的节点的值
+// 后置条件：该节点被成功的插入，b树结构依旧稳定
+void btree_insert(BTree *tree, KeyValue k_val);
+
 #endif

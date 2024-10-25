@@ -77,8 +77,91 @@ void btree_split_child(BTree *tree, BTreeNode *target_node_parent, int i) {
     }
     // 如果不是叶子节点，那么还需要将该节点的子节点们也都放到新的节点中
     if (!target_node->is_leaf) {
-        for (int j = 0; j < t - 1; j++) {
+        for (int j = 0; j < t; j++) {
             new_node->childrens[j] = target_node->childrens[j + t];
         }
+    }
+
+    // 更新分裂完成后当前节点的键数量
+    target_node->key_count = t - 1;
+
+    // 父节点的子节点数组后面的键往后移，留出新节点空间
+    // 这里移动的children数组，但是用的是key_count的原因是，key_count的数量肯定是children的数量的-1
+    for (int j = target_node_parent->key_count; j >= i + 1; j--) {
+        target_node_parent->childrens[j + 1] = target_node_parent->childrens[j];
+    }
+    target_node_parent->childrens[i + 1] = new_node;  // 插入新节点
+
+    // key数组向后移，为新的key留出空间
+    for (int j = target_node_parent->key_count - 1; j >= i; j--) {
+        target_node_parent->keys[j + 1] = target_node_parent->keys[j];
+    }
+    target_node_parent->keys[i] = target_node->keys[t - 1];  // 将分裂节点的中间节点插入父节点的keys数组中
+    target_node_parent->key_count++;  // key的数量增加
+}
+
+/*
+树根节点没有满的时候插入  （辅助函数）
+*/
+void btree_insert_nofull(BTree *tree, BTreeNode *target_node, KeyValue k_val) {
+    int index = target_node->key_count - 1;   // 该index为keys数组最后一个元素的下标
+
+    // 判断要插入的节点是叶子节点还是内部节点
+    if (target_node->is_leaf) {
+        // 走到这里就说明是叶子节点
+        // 找到要插入的位置
+        while (index >= 0 && target_node->keys[index] > k_val) {
+            // 由于这里是未满节点的插入操作，所以不用害怕index + 1会出界
+            target_node->keys[index + 1] = target_node->keys[index];
+            index--;
+        }
+        // 在找到的位置中插入
+        target_node->keys[index + 1] = k_val;
+        target_node->key_count++;  // 该节点的键数量增加
+    }
+    else
+    {
+        // 走到这里就说明是内部节点
+        // 找到该插入到那个子节点中
+        while (index >= 0 && target_node->keys[index] > k_val)
+            index--;
+        // 第一个小于k_val的关键字是index，那么该节点就应该插入到index + 1这个子节点中
+        // 判断该没目标节点是否满了
+        if (target_node->childrens[index + 1]->key_count == 2 * (tree->t) - 1) {
+            // 走到这里就说明满了，需要分裂该节点
+            btree_split_child(tree, target_node, index + 1);
+            // 判断key是要插入分裂后的前半部分节点还是后半部分节点
+            if (k_val > target_node->keys[index + 1])
+                index++;
+            // 插入节点
+            btree_insert_nofull(tree, target_node->childrens[index + 1], k_val);
+        }
+    }
+}
+
+/*
+节点的插入
+*/
+void btree_insert(BTree *tree, KeyValue k_val) {
+    // 获取该树的根节点
+    BTreeNode *root = tree->root;
+    // 判断该根节点是否已满
+    if (root->key_count == 2 * tree->t - 1) {
+        // 走到这里说明满了，进行根节点分裂
+        // 创建新的节点作为根节点
+        BTreeNode *new_root = btree_create_node(tree->t, false);
+        tree->root = new_root;
+        new_root->childrens[0] = root;  // 将旧的根节点作为新根节点的
+        // 分裂该节点
+        btree_split_child(tree, new_root, 0);
+
+        // 判断该节点是要插入分裂之后的0号子树还是1号子树
+        int index = 0;
+        if (new_root->keys[0] < k_val)
+            index++;
+        btree_insert_nofull(tree, new_root->childrens[index], k_val);
+    } else {
+        // 走到这里就说明 根还没有满
+        btree_insert_nofull(tree, root, k_val);
     }
 }
