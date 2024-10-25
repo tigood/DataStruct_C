@@ -58,4 +58,11 @@ void btree_insert_nofull(BTree *tree, BTreeNode *target_node, KeyValue k_val);
 // 后置条件：该节点被成功的插入，b树结构依旧稳定
 void btree_insert(BTree *tree, KeyValue k_val);
 
+/*
+中序遍历该子树
+*/
+// 前置条件：传入一个树节点
+// 后值条件：将该树进行中序遍历
+void btree_traverse(BTreeNode *);
+
 #endif

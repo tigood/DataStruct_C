@@ -165,3 +165,21 @@ void btree_insert(BTree *tree, KeyValue k_val) {
         btree_insert_nofull(tree, root, k_val);
     }
 }
+
+/*
+中序遍历该子树
+*/
+void btree_traverse(BTreeNode *node) {
+    int i = 0;
+
+    for (i = 0; i < node->keys; i++) {
+        if (!node->is_leaf) {
+            // 如果该节点不是叶子节点
+            btree_traverse(node->childrens[i]);
+        }
+        printf("%d ", node->keys[i]);
+    }
+
+    if (!node->is_leaf)
+        btree_traverse(node->childrens[i]);
+}
