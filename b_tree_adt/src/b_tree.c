@@ -118,6 +118,7 @@ void btree_insert_nofull(BTree *tree, BTreeNode *target_node, KeyValue k_val) {
         // 在找到的位置中插入
         target_node->keys[index + 1] = k_val;
         target_node->key_count++;  // 该节点的键数量增加
+        printf("插入了节点：%d\n", k_val);
     }
     else
     {
@@ -133,9 +134,9 @@ void btree_insert_nofull(BTree *tree, BTreeNode *target_node, KeyValue k_val) {
             // 判断key是要插入分裂后的前半部分节点还是后半部分节点
             if (k_val > target_node->keys[index + 1])
                 index++;
-            // 插入节点
-            btree_insert_nofull(tree, target_node->childrens[index + 1], k_val);
         }
+        // 插入节点
+        btree_insert_nofull(tree, target_node->childrens[index + 1], k_val);
     }
 }
 
@@ -171,15 +172,12 @@ void btree_insert(BTree *tree, KeyValue k_val) {
 */
 void btree_traverse(BTreeNode *node) {
     int i = 0;
-
-    for (i = 0; i < node->keys; i++) {
+    for (i = 0; i < node->key_count; i++) {
         if (!node->is_leaf) {
-            // 如果该节点不是叶子节点
             btree_traverse(node->childrens[i]);
         }
         printf("%d ", node->keys[i]);
     }
-
     if (!node->is_leaf)
         btree_traverse(node->childrens[i]);
 }
