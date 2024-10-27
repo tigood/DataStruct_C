@@ -1,4 +1,5 @@
 /*
+Created by tigood on 2024/10/27.
 B树的简单实现
 */
 #ifndef _B_TREE_H
@@ -20,7 +21,7 @@ typedef struct _BTree {
     int t;  // 树的度树 即DEGREE
 } BTree;
 
-// 创建一个节点 
+// 创建一个节点
 // 前置条件：传入该节点所在树的度->DEGREE is_leaf表示是否是子节点
 // 后置条件：创建一个节点并返回
 BTreeNode *btree_create_node(int, bool);
@@ -42,7 +43,7 @@ void btree_create(BTree *, int);
 */
 // 前置条件：传入要分裂的节点的父节点，和该父节点的第几个孩子要分裂
 // 后置条件：该节点被分裂，结构变更
-void btree_split_child(BTree *tree, BTreeNode *node_parent, int i);
+void btree_split_child(const BTree *tree, BTreeNode *node_parent, int i);
 
 /*
 树根节点没有满的时候插入  （辅助函数）
@@ -63,6 +64,33 @@ void btree_insert(BTree *tree, KeyValue k_val);
 */
 // 前置条件：传入一个树节点
 // 后值条件：将该树进行中序遍历
-void btree_traverse(BTreeNode *);
+void btree_traverse(const BTreeNode *);
+
+// 打印一个b树
+// 前置条件：传入要打印的树，和起始节点和当前层数
+void btree_print(BTree *, BTreeNode *, int layer);
+
+/*
+ *二分查找法查找元素
+ *用途：在找到目标节点之后，在它的keys中查找元素，keys是按照从小到大的顺序排列的
+ *前置条件：传入目标节点，和指定的元素值
+ *后置条件：如果找到该节点，返回它的值
+ */
+int btree_binary_search(const BTreeNode *, KeyValue);
+
+// 节点的合并
+// 前置条件：传入指定的b树，和要合并的节点的父节点，和指定键的下标
+// 后置条件：将该节点下沉并和两个子节点合并 新节点即{childs{index},key{index},childs{index + 1}}
+void btree_merge(BTree *, BTreeNode **, int);
+
+// 删除的节点函数的辅助函数
+// 前置条件：传入指定的树，起始节点，和目标值
+// 后置条件：如果找到目标值，就删除
+void btree_delete_key_recu(BTree *, BTreeNode *, KeyValue);
+
+// 删除指定节点
+// 前置条件：传入指定的树，和目标节点的值
+// 后置条件：如果找到该节点，就删除
+void btree_delete_key(BTree *, KeyValue);
 
 #endif
