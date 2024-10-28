@@ -732,3 +732,46 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 > 即`5`阶`b*-树`的关键字数量为`4`到`5`个。
 >
 > 插入的时候，如果关键字数量未满就直接插入，如果要插入节点已满，就查看兄弟节点是否有空间，如果兄弟节点有空间，就通过**旋转操作**将目标节点中的一个关键字移入兄弟节点中，然后再进行插入。如果兄弟节点同样满了，那么就进行分裂操作，将中心节点提升到父节点中。重复以上的过程，直到整颗树的结构都符合定义要求
+
+### 4.39 and 4.40
+
+> 代码实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.39/tree.c">tree.c</a>
+>
+> 头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_4_exs/4.39/tree.h">tree.h</a>
+
+### 4.41
+
+> ```c
+> bool similar(BinaryTree T1, BinaryTree T2) {
+>     if (T1 == NULL || T2 == NULL) {
+>         return T1 == NULL && T2 == NULL;
+>     }
+>     return similar(T1->left, T2->left) && similar(T1->right, T2->right);
+> }
+> ```
+>
+> 时间复杂度是线性的
+
+### 4.42
+
+>算法的时间是线性的：实现如下：
+>
+>```c
+>bool is_isomorphic(Tree t1, Tree t2) {
+>    // 如果都为空，返回真
+>    if (t1 == NULL && t2 == NULL) {
+>        reutrn true;
+>    }
+>    // 如果其中一个不为空，或者二者都不为空但是节点的值不同，返回假
+>    if (t1 == NULL || t2 == NULL || t1->value != t2->value) {
+>        return false;
+>    }
+>    
+>    // 检查两种情况，左右子树分别同构的，或者左右子树交换后同构的
+>    return (is_isomporphic(t1->left, t2->left) && is_isomporphic(t1->right, t2->right) || (is_isomporphic(t1->left, t2->right) && is_isomporphic(t1->right, t2->left));
+>}
+>```
+
+### 4.43
+
+> 
