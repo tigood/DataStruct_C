@@ -53,7 +53,7 @@ int getPrecedence(char ch);
 // 根据两个操作数和一个运算符进行运算
 // 前置条件：传入两个操作数和一个运算符
 // 后置条件：返回计算结果的整形
-double calcuation_two_nums(const char *num1, const char *num2, const char *oper);
+double calcuation_two_nums(double num1, double num2, const char oper);
 
 // 系统运行函数
 void cal_sys_run(void);

@@ -97,160 +97,184 @@ int getPrecedence(char ch) {
     }
 }
 
-// 中缀表达式变为后缀表达式
 char *infixToSuffix(const char *per){
-    // 创建一个栈用来存储运算符
     Stack oper_stack = CreateStack();
-
-    // 创建一个输出字符串来存储后缀结果
     char *result_str = (char *)malloc(sizeof(char) * strlen(per) * 2);
-
     if (result_str == NULL) {
         fprintf(stderr, "空间分配失败！\n");
         exit(EXIT_FAILURE);
     }
 
-    // 遍历前缀算式，进行转换
     const char *temp_per = per;
     char *temp_result = result_str;
-    while (*temp_per != '\0')
-    {
+    char num_buffer[20];  // 缓存数字
+    int buffer_index = 0;
 
-        if (*temp_per == ' ')
-        {
+    while (*temp_per != '\0') {
+        if (*temp_per == ' ') {
+            if (buffer_index > 0) {
+                // 遇到空格，说明一个完整数字结束
+                num_buffer[buffer_index] = '\0';
+                strcpy(temp_result, num_buffer);
+                temp_result += buffer_index;
+                *(temp_result++) = ' ';
+                buffer_index = 0;
+            }
             temp_per++;
             continue;
         }
-        if(isOperator(*temp_per)) {
-            // 如果当前字符是一个运算符
-            // 将这个字符封装为一个字符串
-            char *operatorStr = (char *)malloc(2);
-            operatorStr[0] = *temp_per;
-            operatorStr[1] = '\0';
-            // 判断这个栈是否为空，如果为空直接加入
-            if (IsEmpty(oper_stack)) {
-                // 将该字符加入栈中
-                Push(oper_stack, operatorStr);
-            } else {
-                if (*temp_per == '(') {
+
+        if (isdigit(*temp_per)) {
+            // 累积数字到缓冲区
+            num_buffer[buffer_index++] = *temp_per;
+        } else {
+            if (buffer_index > 0) {
+                num_buffer[buffer_index] = '\0';
+                strcpy(temp_result, num_buffer);
+                temp_result += buffer_index;
+                *(temp_result++) = ' ';
+                buffer_index = 0;
+            }
+
+            if (isOperator(*temp_per)) {
+                // 运算符处理逻辑
+                char *operatorStr = (char *)malloc(2);
+                operatorStr[0] = *temp_per;
+                operatorStr[1] = '\0';
+                if (IsEmpty(oper_stack)) {
                     Push(oper_stack, operatorStr);
-                } else if (*temp_per == ')') {
-                    // 将栈中的元素弹出，一直到（
-                    while (!IsEmpty(oper_stack) && Top(oper_stack)[0] != '(')
-                    {
-                        // 添加到输出列表中
-                        char *oldElem = Pop(oper_stack);
-                        *(temp_result++) = oldElem[0];  // 获取字符
-                        *(temp_result++) = ' ';
-                        free(oldElem);
-                    }
-                    // 将(弹出
-                    free(Pop(oper_stack));
                 } else {
-                    // 如果这个栈不为空，则判断优先级
-                    // 将栈中优先级大于这个运算符的运算符弹出来添加到输出列表中
-                    while (!IsEmpty(oper_stack) && isHigher(Top(oper_stack)[0], *temp_per)) {
-                        char *oldElem = Pop(oper_stack);
-                        *(temp_result++) = oldElem[0];  // 获取字符
-                        *(temp_result++) = ' ';
-                        free(oldElem);
+                    if (*temp_per == '(') {
+                        Push(oper_stack, operatorStr);
+                    } else if (*temp_per == ')') {
+                        while (!IsEmpty(oper_stack) && Top(oper_stack)[0] != '(') {
+                            char *oldElem = Pop(oper_stack);
+                            *(temp_result++) = oldElem[0];
+                            *(temp_result++) = ' ';
+                            free(oldElem);
+                        }
+                        free(Pop(oper_stack));
+                    } else {
+                        while (!IsEmpty(oper_stack) && isHigher(Top(oper_stack)[0], *temp_per)) {
+                            char *oldElem = Pop(oper_stack);
+                            *(temp_result++) = oldElem[0];
+                            *(temp_result++) = ' ';
+                            free(oldElem);
+                        }
+                        Push(oper_stack, operatorStr);
                     }
-                    // 将当前字符加入栈中
-                    Push(oper_stack, operatorStr);
                 }
             }
-        } else {
-            // 当前字符为一个数，将他添加到输出列表中
-            *(temp_result++) = *temp_per;
-            *(temp_result++) = ' ';
         }
         temp_per++;
     }
-    // 如果栈中还有剩余运算符则逐一弹出
-    while (!IsEmpty(oper_stack))
-    {
+
+    // 输出最后一个数字
+    if (buffer_index > 0) {
+        num_buffer[buffer_index] = '\0';
+        strcpy(temp_result, num_buffer);
+        temp_result += buffer_index;
+        *(temp_result++) = ' ';
+    }
+
+    while (!IsEmpty(oper_stack)) {
         char *oldElem = Pop(oper_stack);
         *(temp_result++) = oldElem[0];
         *(temp_result++) = ' ';
         free(oldElem);
     }
-    // 释放栈例程
+
     DisposeStack(oper_stack);
     *temp_result = '\0';
     return result_str;
 }
 
+
 // 根据运算符计算两个整数
-double calcuation_two_nums(const char* num1, const char* num2, const char* oper) {
-    double inum1 = atoi(num1);
-    double inum2 = atoi(num2);
-    if (strcmp(oper, "+") == 0)
+double calcuation_two_nums(double num1, double num2, const char oper) {
+    if (oper == '+')
     {
-        return inum1 + inum2;
+        return num1 + num2;
     }
-    else if (strcmp(oper, "-") == 0)
+    else if (oper == '-')
     {
-        return inum1 - inum2;
+        return num1 - num2;
     }
-    else if (strcmp(oper, "*") == 0)
+    else if (oper == '*')
     {
-        return inum1 * inum2;
+        return num1 * num2;
     }
-    else if (strcmp(oper, "/") == 0)
+    else if (oper == '/')
     {
-        return inum1 / inum2;
+        return num1 / num2;
     }
-    else if (strcmp(oper, "^") == 0)
+    else if (oper == '^')
     {
-        return fast_pow(inum1, inum2);
+        return fast_pow(num1, num2);
     }
     // 默认返回
     return 0.0;
 }
 
-// 计算后缀表达式的值
 double calcuationBySuffix(const char *formula) {
-    // 创建一个栈
-    // 遇到操作数，就将操作数压入栈中
-    // 遇到运算符，就在栈中弹出两个操作数进行计算
-    // 计算完毕之后再将结果压入栈中
-    // 循环到算式结束
+    // 创建一个操作数栈
     Stack operand_stack = CreateStack();
     const char *temp_formula = formula;
-    while (*temp_formula != '\0')
-    {
+
+    while (*temp_formula != '\0') {
         if (*temp_formula == ' ') {
             temp_formula++;
             continue;
         }
-        // 将字符封装为一个字符串
-        char *formualStr = (char *)malloc(2);
-        formualStr[0] = *temp_formula;
-        formualStr[1] = '\0';
-        // 如果是一个操作数，就将这个操作数压入栈中
-        if (!isOperator(*temp_formula)) {
-            Push(operand_stack, formualStr);
-        } else {
-            // 如果是一个操作符就从栈中弹出两个数计算
+
+        // 读取完整操作数，支持多位数和负数
+        if (isdigit(*temp_formula) || (*temp_formula == '-' && isdigit(*(temp_formula + 1)))) {
+            char numStr[20];  // 假设数值不超过20位
+            int pos = 0;
+
+            // 复制完整的数值到 numStr
+            while (*temp_formula != ' ' && *temp_formula != '\0') {
+                numStr[pos++] = *temp_formula;
+                temp_formula++;
+            }
+            numStr[pos] = '\0';
+
+            // 将操作数入栈
+            char *operand = strdup(numStr);
+            Push(operand_stack, operand);
+
+        } else if (isOperator(*temp_formula)) {
+            // 处理运算符，出栈两个操作数
+            char op = *temp_formula;
+            temp_formula++;
+
             char *num1 = Pop(operand_stack);
             char *num2 = Pop(operand_stack);
-            double cal_result = calcuation_two_nums(num2, num1, formualStr);
+
+            double operand2 = atof(num1);
+            double operand1 = atof(num2);
+
+            double result = calcuation_two_nums(operand1, operand2, op);  // 计算两个数
+            
             free(num1);
             free(num2);
-            free(formualStr);
-            // 将计算的结果转换为字符串，然后重新存入栈中
+
+            // 将结果转换为字符串并入栈
             char resultStr[20];
-            snprintf(resultStr, sizeof(resultStr), "%.2f", cal_result);
-            Push(operand_stack, resultStr);
+            snprintf(resultStr, sizeof(resultStr), "%.2f", result);
+            char *resultCopy = strdup(resultStr);
+            Push(operand_stack, resultCopy);
+            free(resultCopy);
         }
-        temp_formula++;
     }
-    // 执行完毕之后将最后的结果从栈中取出来
+
+    // 获取最终计算结果
     char *result = Pop(operand_stack);
-    double iresult = atoi(result);
+    double final_result = atof(result);
     free(result);
+
     DisposeStack(operand_stack);
-    return iresult;
+    return final_result;
 }
 
 // 读取用户输入的算式
@@ -273,6 +297,7 @@ void cal_sys_run(void) {
         }
         // 将输入的算式转换并计算
         double result = calcuationBySuffix(infixToSuffix(userInput));
+        printf("后缀表达式为：%s\n", infixToSuffix(userInput));
         printf("运算结果为：%.2f\n", result);
         printf("是否继续计算？(y/n)\n");
         char choose_ch = getchar();
