@@ -287,65 +287,97 @@ void btree_merge(BTree *tree, BTreeNode **target_node_ref, int index) {
 
 // 删除的节点函数的辅助函数
 void btree_delete_key_recu(BTree *tree, BTreeNode *node, KeyValue k_val) {
-    // 参数合法性检测
     if (tree == NULL || node == NULL) {
         fprintf(stderr, "参数传递错误！\n");
         exit(EXIT_FAILURE);
     }
 
     int index = 0;
-    // 找到要删除节点的位置
     while (index < node->key_count && k_val > node->keys[index]) {
         index++;
     }
 
-    // 判断是否找到了，找到了就进行删除的逻辑，没有找到就去它的子树中继续寻找
     if (index < node->key_count && k_val == node->keys[index]) {
-        // 走到这里面说明找到了，执行删除逻辑
-        // 删除的时候存在一下几种情况
-        // 1.叶子节点
-        // 2.左边的子节点的key数量大于T - 1
-        // 3.右边的子节点的key数量大于T - 1
-        // 4.左右都不满足，也不是叶子节点，就要进行合并操作了
         if (node->is_leaf) {
-            // 走到这里说明到叶子节点了
-            for (int i = 0; i < node->key_count - 1; i++) {
+            // 情况 1：叶子节点删除
+            for (int i = index; i < node->key_count - 1; i++) {
                 node->keys[i] = node->keys[i + 1];
             }
-
-            // 更新节点信息
-            node->keys[node->key_count - 1] = 0;
             node->key_count--;
-            if (node->key_count == 0 && tree->root == node) {
-                free(node);
-                tree->root = NULL;
-            }
             return;
-        } else if (node->childrens[index]->key_count >= tree->t) {
-            // 走到这里说明左子树的key数量够，可以借
-            BTreeNode *left = node->childrens[index];
-            // 用左子树的最后一个关键字来代替当前节点的关键字
-            node->keys[index] = left->keys[left->key_count - 1];
-
-            // 删除原左子树中的该值
-            btree_delete_key_recu(tree, left, left->keys[left->key_count - 1]);
-        } else if (node->childrens[index + 1]->key_count >= tree->t) {
-            // 走到这里说明右子树的key数量够，可以借
-            BTreeNode *right = node->childrens[index + 1];
-            // 用右子树的第一个关键字来代替当前节点的关键字
-            node->keys[index] = right->keys[0];
-
-            // 删除原右子树中的节点
-            btree_delete_key_recu(tree, right, right->keys[0]);
         } else {
-            // 走到这里说明即不是叶子节点，也不是
-            // 合并节点 经过筛选，它肯定不是叶子节点，所以直接将node关键字下沉，然后合并左右子树
-            btree_merge(tree, &node, index);
-            // 合并之后，再删除指定元素
-            btree_delete_key_recu(tree, node->childrens[index], k_val);
+            // 非叶子节点，继续检查左右兄弟节点
+            BTreeNode *left_child = node->childrens[index];
+            BTreeNode *right_child = node->childrens[index + 1];
+
+            if (left_child->key_count >= tree->t) {
+                node->keys[index] = left_child->keys[left_child->key_count - 1];
+                btree_delete_key_recu(tree, left_child, node->keys[index]);
+            } else if (right_child->key_count >= tree->t) {
+                node->keys[index] = right_child->keys[0];
+                btree_delete_key_recu(tree, right_child, node->keys[index]);
+            } else {
+                // 左右子节点都不足，合并
+                btree_merge(tree, &node, index);
+                btree_delete_key_recu(tree, left_child, k_val);
+            }
         }
     } else {
-        // 走到这里说明没有找到，继续寻找子节点
-        
+        // 递归地在子树中查找
+        BTreeNode *child = node->childrens[index];
+        if (child->key_count == tree->t - 1) {
+            BTreeNode *left_sibling = index > 0 ? node->childrens[index - 1] : NULL;
+            BTreeNode *right_sibling = index < node->key_count ? node->childrens[index + 1] : NULL;
+
+            if (left_sibling && left_sibling->key_count >= tree->t) {
+                // 从左兄弟借一个键
+                for (int i = child->key_count; i > 0; i--) {
+                    child->keys[i] = child->keys[i - 1];
+                    child->childrens[i + 1] = child->childrens[i];
+                }
+                child->childrens[1] = child->childrens[0];
+                child->keys[0] = node->keys[index - 1];
+                node->keys[index - 1] = left_sibling->keys[left_sibling->key_count - 1];
+                child->childrens[0] = left_sibling->childrens[left_sibling->key_count];
+                left_sibling->key_count--;
+                child->key_count++;
+            } else if (right_sibling && right_sibling->key_count >= tree->t) {
+                // 从右兄弟借一个键
+                child->keys[child->key_count] = node->keys[index];
+                node->keys[index] = right_sibling->keys[0];
+                child->childrens[child->key_count + 1] = right_sibling->childrens[0];
+                right_sibling->key_count--;
+                child->key_count++;
+
+                // 更新右兄弟的 keys 和 childrens
+                for (int i = 0; i < right_sibling->key_count; i++) {
+                    right_sibling->keys[i] = right_sibling->keys[i + 1];
+                    right_sibling->childrens[i] = right_sibling->childrens[i + 1];
+                }
+                right_sibling->childrens[right_sibling->key_count] = right_sibling->childrens[right_sibling->key_count + 1];
+            } else {
+                // 无法借，则合并
+                if (left_sibling) {
+                    btree_merge(tree, &node, index - 1);
+                    child = left_sibling;
+                } else {
+                    btree_merge(tree, &node, index);
+                }
+            }
+        }
+        btree_delete_key_recu(tree, child, k_val);
     }
+}
+
+bool btree_delete_key(BTree *tree, KeyValue k_val) {
+    if (tree == NULL) {
+        return false;
+    }
+    btree_delete_key_recu(tree, tree->root, k_val);
+    if (tree->root->key_count == 0) {
+        BTreeNode *old_root = tree->root;
+        tree->root = tree->root->is_leaf ? NULL : tree->root->childrens[0];
+        free(old_root);
+    }
+    return true;
 }

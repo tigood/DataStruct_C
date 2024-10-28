@@ -19,6 +19,15 @@ int main(void) {
 
     btree_traverse(tree.root);
     printf("\n");
+    // btree_print(&tree, tree.root, tree.root->is_leaf);
+
+    // 删除测试
+    btree_delete_key(&tree, 12);
+    btree_delete_key(&tree, -7);
+    printf("删除了节点12和-7\n");
+    btree_traverse(tree.root);
+    printf("\n");
+    // btree_print(&tree, tree.root, tree.root->is_leaf);
 
     return 0;
 }

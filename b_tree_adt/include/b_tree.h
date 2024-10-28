@@ -91,6 +91,6 @@ void btree_delete_key_recu(BTree *, BTreeNode *, KeyValue);
 // 删除指定节点
 // 前置条件：传入指定的树，和目标节点的值
 // 后置条件：如果找到该节点，就删除
-void btree_delete_key(BTree *, KeyValue);
+bool btree_delete_key(BTree *, KeyValue);
 
 #endif

@@ -719,12 +719,11 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 >
 > ![](./README.assets/4_36_b.png)
 
-4 2 3 * 10 5 / - +
+### 4.37
 
-4 6 10 5 / - +
+> b树的的实现代码：<a href="https://github.com/tigood/DataStruct_C/blob/main/b_tree_adt/src/b_tree.c">b_tree.c</a>
+>
+> 头文件：<a href="https://github.com/tigood/DataStruct_C/blob/main/b_tree_adt/include/b_tree.h">b_tree.h</a>
 
-4 6 2 - +
+### 4.38
 
-4 4 +
-
-8
