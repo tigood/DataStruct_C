@@ -1,3 +1,0 @@
-/home/tigood/myCode/cCode/shujujiegou/unit_4_exs/4.39/cmake-build-debug/CMakeFiles/4_39.dir
-/home/tigood/myCode/cCode/shujujiegou/unit_4_exs/4.39/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/tigood/myCode/cCode/shujujiegou/unit_4_exs/4.39/cmake-build-debug/CMakeFiles/rebuild_cache.dir
