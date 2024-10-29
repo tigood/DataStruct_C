@@ -226,7 +226,32 @@ ElementType calcuation_two_num(ElementType num1, ElementType num2, char oper) {
 }
 
 bool kuo_hao(char* str) {
-
+    int i = 0, c;  //i 为下标， c为接收出栈元素
+    SqStack s;
+    init_stack(&s);
+    while (str[i] != '#') {
+        if (str[i] == '(' || str[i] == '[') {
+            push(&s, str[i]);
+        } else if (str[i] == ')' || str[i] == ']') {
+            // 三种情况，匹配，部匹配，栈里没有
+            if (pop(&s, &c)) {
+                // 栈不空，出栈
+                if ((c == '(' && str[i] == ']') || (c == '[' && str[i] == ')')) {
+                    printf("括号类型不匹配！\n");
+                    return false;
+                }
+            }
+            else {
+                printf("栈空，没有左括号等待弹出，右括号多余，不匹配!\n");
+                return false;
+            }
+        }
+        i++;
+    }
+    if (s.top != s.base) {
+        printf("栈不为空，括号不匹配！\n");
+        return false;
+    }
     return true;
 }
 
