@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <ctype.h>
 #define MAXSIZE 3  // 初始内存
 #define INCREAMENT 10  // 每次增长这么多
 
@@ -14,6 +15,10 @@ typedef struct {
     size_t stack_size;
     ElementType *top;
 } SqStack, *PSqStack;
+
+bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')' || c == '#';
+}
 
 // 栈的初始化
 bool init_stack(PSqStack p_stack) {
@@ -149,14 +154,139 @@ void convert_base(int number, int base) {
     printf("\n");
 }
 
+// 优先级比较
+char Precede(char top, char c) {
+    char result = ' ';
+    switch (c)
+    {
+    case '+':
+    case '-':
+        if (top == '(' || top == '#')
+            result = '<';
+        else
+            result = '>';
+        break;
+    case '*':
+    case '/':
+        if (top == '*' || top == '/' || top == ')')
+            result = '>';
+        else
+            result = '<';
+        break;
+    case '(':
+        if (top == ')')
+            printf("表达式错误！\n");
+        else
+            result = '<';
+        break;
+    case ')':
+        if (top == '(')
+            result = '=';
+        else
+            result = '>';
+        break;
+    case '#':
+        if (top == '#')
+            result = '=';
+        else
+            result = '>';
+        break;
+
+    default:
+        printf("运算符超出范围！\n");
+        break;
+    }
+
+    return result;
+}
+
+// 计算两数之和
+ElementType calcuation_two_num(ElementType num1, ElementType num2, char oper) {
+    ElementType result;
+    switch (oper)
+    {
+    case '+':
+        result = num1 + num2;
+        break;
+    case '-':
+        result = num1 - num2;
+        break;
+    case '*':
+        result = num1 * num2;
+        break;
+    case '/':
+        result = num1 / num2;
+        break;
+    default:
+        printf("不合理的运算符！\n");
+        break;
+    }
+
+    return result;
+}
+
+bool kuo_hao(char* str) {
+
+    return true;
+}
+
+ElementType EE(char exp[]) {
+    int i = 0;
+    ElementType a, b, d = 0;
+    ElementType theta, x;
+    SqStack OP, DT;
+    bool flag = false;  // 数字标记，多位数处理
+    init_stack(&OP);
+    push(&OP, '#');
+    init_stack(&DT);  // 数据栈
+
+    while (exp[i] != '#' || top(OP) != '#') {
+        if (isdigit(exp[i])) {  // 处理数字
+            if (!flag) {
+                push(&DT, exp[i] - '0');
+            } else {
+                pop(&DT, &d);
+                push(&DT, d * 10 + (exp[i] - '0'));  // 多位数整合
+            }
+            flag = true;
+            i++;  // 读取下一个字符
+        } else {  // 处理符号
+            switch (Precede(top(OP), exp[i])) {
+                case '>':
+                    pop(&DT, &b);
+                    pop(&DT, &a);
+                    pop(&OP, &theta);
+                    push(&DT, calcuation_two_num(a, b, theta));
+                    break;
+                case '<':
+                    push(&OP, exp[i]);  // 将当前符号入栈
+                    i++;
+                    break;
+                case '=':
+                    pop(&OP, &x); // 去掉左括号
+                    i++;
+                    break;
+                default:
+                    printf("无效的符号！\n");
+                    return -1;  // 添加错误处理
+            }
+            flag = false;  // 重置多位数标记
+        }
+    }
+
+    return top(DT);
+}
+
+
 void main()
 {
 	SqStack S;//创建栈对象
 	int choice=0;
 	int e;
 	int num,d;
-	init_stack(&S);//调用初始化函数
-	do
+    char str[100];
+    init_stack(&S); // 调用初始化函数
+    do
 	{
 		printf("*************栈的基本操作**************\n");
 		printf("**************1.创建栈*****************\n");
@@ -201,14 +331,24 @@ void main()
 			printf("将十进制数%d转换为%d进制数，结果为：\n",num,d);
 			convert_base(num,d);
 			break;
-		case 0:
-			printf("退出！\n");
+		case 7:
+			printf("请输入表达式，以#结束：\n");
+			scanf(" %s",str);
+			if(kuo_hao(str))
+                printf("表达式匹配\n");
+            break;
+		case 8:
+			printf("请输入表达式，以#结束：\n");
+			scanf(" %s",str);
+			printf("运算结果为：%d\n",EE(str));
+			break;
+        case 0:
+            printf("退出！\n");
 			break;
 		default:
-			printf("只能输入0-5！\n");
+			printf("只能输入0-8！\n");
 			break;
 
 		}
 	}while(choice);
-	system("pause");
 }
