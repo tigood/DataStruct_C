@@ -3,7 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
-#include "math.h"
+#include <math.h>
 #include "hash_sep.h"
 
 // 哈希函数
@@ -39,7 +39,7 @@ List create_empty_list(void) {
         fprintf(stderr, "空间开辟失败！\n");
         exit(EXIT_FAILURE);
     }
-    list->next == NULL;
+    list->next = NULL;
 
     return list;
 }
@@ -70,6 +70,7 @@ HashTable create_hash_table(int size) {
         hash_table->the_lists[i] = create_empty_list();
     }
     // 返回创建的哈希表
+    printf("哈希表创建成功！\n");
     return hash_table;
 }
 
@@ -110,6 +111,10 @@ void destroy_hash_table(HashTable *hash_table) {
 // 查找指定元素
 Position find_elem_hash_table(HashTable hash_table, ElementType target) {
     // 计算哈希之后的位置
+    if (hash_table == NULL) {
+        fprintf(stderr, "参数传递错误！\n");
+        exit(EXIT_FAILURE);
+    }
     const Index index = hash(target, hash_table->table_size);
     Position curr = hash_table->the_lists[index]->next;
     while (curr != NULL && retrieve_node(curr) != target) {
@@ -121,9 +126,13 @@ Position find_elem_hash_table(HashTable hash_table, ElementType target) {
 
 // 插入一个指定的元素
 void insert_elem_hash_table(HashTable hash_table, ElementType elem) {
+    if (hash_table == NULL) {
+        fprintf(stderr, "参数传递错误！\n");
+        exit(EXIT_FAILURE);
+    }
     // 查看当前元素是否已经存在
     Position pos = find_elem_hash_table(hash_table, elem);
-    if (pos != NULL) {
+    if (pos == NULL) {
         // 走到这里说明当前元素不存在，那就直接插入
         // 创建一个新节点
         Position new_node = malloc(sizeof(struct ListNode));
@@ -139,13 +148,18 @@ void insert_elem_hash_table(HashTable hash_table, ElementType elem) {
         const Index index = hash(elem, hash_table->table_size);
         new_node->elem = elem;
         new_node->next = hash_table->the_lists[index]->next;
-        hash_table->the_lists[index] = new_node;
+        hash_table->the_lists[index]->next = new_node;
+        printf("插入成功！%d\n", elem);
     }
     // 如果已经找到了该节点，就什么也不做
 }
 
 // 删除一个指定的节点
 bool delete_node_hash_table(HashTable hash_table, ElementType target) {
+    if (hash_table == NULL) {
+        fprintf(stderr, "参数传递错误！\n");
+        exit(EXIT_FAILURE);
+    }
     // 计算所在的单元
     const Index index = hash(target, hash_table->table_size);
     List target_list = hash_table->the_lists[index];
