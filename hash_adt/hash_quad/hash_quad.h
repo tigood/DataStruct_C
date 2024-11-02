@@ -48,6 +48,11 @@ Position find_elem_hash_table_quad(HashTable, ElementType);
 // 后置条件：该元素被插入到哈希表中
 void insert_elem_hash_table_quad(HashTable, ElementType);
 
+// 向指定的哈希表删除一个指定的元素
+// 前置条件：传入一个指定的哈希表，和一个指定的元素
+// 后置条件：如果该元素存在就删除掉，如果不存在就报错
+void delete_elem_hash_table_quad(HashTable, ElementType);
+
 // 取出哈希表单元格中的值
 // 前置条件：传入一个指定的哈希表，和一个指定的位置
 // 后置条件：返回该位置的值

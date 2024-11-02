@@ -4,4 +4,7 @@ project(hash_quad C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(hash_quad main.c
-        hash_quad.h)
+        hash_quad.h
+        hash_quad.c
+)
+target_link_libraries(hash_quad m)
