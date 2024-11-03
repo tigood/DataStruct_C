@@ -152,3 +152,29 @@ void delete_elem_hash_table_quad(HashTable hash_table, ElementType elem) {
         exit(EXIT_FAILURE);
     }
 }
+
+// 再散列
+HashTable rehash_hash_table_quad(HashTable hash_table) {
+    // 参数合法性检测
+    if (!hash_table) {
+        fprintf(stderr, "参数传递错误！\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int old_table_size = hash_table->table_size;
+    HashTable old_hash_table = hash_table;
+
+    // 创建一个双倍大小的新表
+    hash_table = create_hash_table_quad(next_prime(2 * old_table_size));
+
+    for (int i = 0; i < old_table_size; i++) {
+        if (old_hash_table->table[i].info == Legitimate) {
+            insert_elem_hash_table_quad(hash_table, old_hash_table->table[i].elem);
+        }
+    }
+
+    // 释放原来的空间
+    destroy_hash_table_quad(&old_hash_table);
+
+    return hash_table;
+}

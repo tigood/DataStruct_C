@@ -10,6 +10,8 @@ int main(void) {
     insert_elem_hash_table_quad(hash_table, 6);
     insert_elem_hash_table_quad(hash_table, 7);
     delete_elem_hash_table_quad(hash_table, 8);
+    hash_table = rehash_hash_table_quad(hash_table);
+    delete_elem_hash_table_quad(hash_table, 6);
 
     destroy_hash_table_quad(&hash_table);
     return 0;
