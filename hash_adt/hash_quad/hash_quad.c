@@ -1,5 +1,6 @@
 //
 // Created by tigood on 2024/11/2.
+// 这是一个使用平方探测法实现的散列
 //
 #include "hash_quad.h"
 #include <stdio.h>
