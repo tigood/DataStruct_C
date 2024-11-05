@@ -791,3 +791,149 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 ### 4.46
 
 > 
+
+
+
+## 第五章课后练习题
+
+### 5.1
+
+> **a.**
+>
+> ![image-20241104171100906](./README.assets/image-20241104171100906.png)
+>
+> **b.**
+>
+> ![image-20241104171113915](./README.assets/image-20241104171113915.png)
+>
+> **c.**
+>
+> ![image-20241104171124855](./README.assets/image-20241104171124855.png)
+>
+> **d.**
+>
+> ![image-20241104171134280](./README.assets/image-20241104171134280.png)
+
+### 5.2
+
+> 将表的大小扩展为2倍之后，找到这个大小最近的第一个素数，将这个树作为新的表大小，然后重新进行散列
+
+### 5.3
+
+> ```c
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <time.h>
+> 
+> #define TABLE_SIZE 101   // 哈希表大小（选用一个素数）
+> #define PRIME 97         // 双散列使用的辅助素数，要求小于 TABLE_SIZE
+> #define NUM_INSERTS 50   // 插入元素的数量
+> 
+> int linearProbe(int hash, int i) {
+>     return (hash + i) % TABLE_SIZE;
+> }
+> 
+> int quadraticProbe(int hash, int i) {
+>     return (hash + i * i) % TABLE_SIZE;
+> }
+> 
+> int doubleHash(int key, int i) {
+>     int hash1 = key % TABLE_SIZE;
+>     int hash2 = PRIME - (key % PRIME);
+>     return (hash1 + i * hash2) % TABLE_SIZE;
+> }
+> 
+> void resetTable(int *table) {
+>     for (int i = 0; i < TABLE_SIZE; i++) table[i] = -1;
+> }
+> 
+> int insertLinear(int *table, int key) {
+>     int hash = key % TABLE_SIZE;
+>     int i = 0, conflicts = 0;
+>     while (table[linearProbe(hash, i)] != -1) {
+>         conflicts++;
+>         i++;
+>     }
+>     table[linearProbe(hash, i)] = key;
+>     return conflicts;
+> }
+> 
+> int insertQuadratic(int *table, int key) {
+>     int hash = key % TABLE_SIZE;
+>     int i = 0, conflicts = 0;
+>     while (table[quadraticProbe(hash, i)] != -1) {
+>         conflicts++;
+>         i++;
+>     }
+>     table[quadraticProbe(hash, i)] = key;
+>     return conflicts;
+> }
+> 
+> int insertDoubleHash(int *table, int key) {
+>     int i = 0, conflicts = 0;
+>     while (table[doubleHash(key, i)] != -1) {
+>         conflicts++;
+>         i++;
+>     }
+>     table[doubleHash(key, i)] = key;
+>     return conflicts;
+> }
+> 
+> int main() {
+>     int table[TABLE_SIZE];
+>     int conflictsLinear = 0, conflictsQuadratic = 0, conflictsDouble = 0;
+> 
+>     // 初始化随机数种子
+>     srand(time(NULL));
+> 
+>     // 生成随机序列并分别插入到每种哈希表中
+>     for (int i = 0; i < NUM_INSERTS; i++) {
+>         int key = rand() % 1000;  // 生成一个随机键值
+> 
+>         // 线性探测
+>         resetTable(table);
+>         conflictsLinear += insertLinear(table, key);
+> 
+>         // 平方探测
+>         resetTable(table);
+>         conflictsQuadratic += insertQuadratic(table, key);
+> 
+>         // 双散列
+>         resetTable(table);
+>         conflictsDouble += insertDoubleHash(table, key);
+>     }
+> 
+>     printf("Total conflicts using Linear Probing: %d\n", conflictsLinear);
+>     printf("Total conflicts using Quadratic Probing: %d\n", conflictsQuadratic);
+>     printf("Total conflicts using Double Hashing: %d\n", conflictsDouble);
+> 
+>     return 0;
+> }
+> ```
+
+### 5.4
+
+>该表的装填因子至少要小于0.25
+
+### 5.5
+
+> **a.**
+>
+> 因为每一个表项都将被探测到，所以如果表不满，冲突一定会被解决掉
+>
+> **b.**
+>
+> 这种消除了一次聚集，但是没有消除二次聚集，因为所有的元素均使用的同一种解决冲突的序列
+>
+> **c. d.**
+>
+> 运行时间可能和平方探测相似。它的优点是除非表满了否则插入不会失败。
+>
+> **e.**
+
+### 5.6
+
+> 分离链接散列表需要使用指针，这会占用空间，并且引起调用空间配置例程的开销，这通常是昂贵的。线性探测易于实现，但在装填因子增大时因为一次聚集它的表现严重下降。平方探测实现起来只稍稍比线性探测复杂，且在实践中有很好的表现。但在表半满的时候插入可能失败，不过这不经常出现。再散列消除了一次和二次聚集，但是需要使用合理的hash函数才会产生好的结果
+
+### 5.7
+
