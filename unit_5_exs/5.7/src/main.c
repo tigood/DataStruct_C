@@ -77,9 +77,56 @@ void term_multiply(HashTable *result, Term *poly1, Term *poly2) {
 // 排序方法
 void sortTerms(Term **terms_arr, int count) {
 	// 使用简单的冒泡排序
+	for (int i = 0; i < count - 1; i++) {
+		for (int j = 0; j < count - i - 1; j++) {
+			if (terms_arr[j]->exp > terms_arr[j + 1]->exp) {  // 按指数将序排列
+				Term *temp = terms_arr[j];
+				terms_arr[j] = terms_arr[j + 1];
+				terms_arr[j + 1] = temp;
+			}
+		}
+	}
 }
 
-int main(void) {
+// 收集结果，将哈希表的内容收集到一个数组中
+int collect_terms(HashTable *hash_table, Term **terms_arr) {
+	int count = 0;
+	Term *curr_item;
 
-	return 0;
+	for (int i = 0; i < HASHSIZE; i++) {
+		curr_item = hash_table->table[i];
+		while (curr_item != NULL) {
+			terms_arr[count++] = curr_item;
+			curr_item = curr_item->next;
+		}
+	}
+
+	return count;
+}
+
+// 打印排序后的结果
+void printSortedPolynomial(HashTable *hash_table) {
+	Term *terms_arr[HASHSIZE];
+	int count = collect_terms(hash_table, terms_arr);  // 收集元素
+	sortTerms(terms_arr, count);
+
+	// 打印结果
+	for (int i = 0; i < count; i++) {
+		printf("%dx^%d ", terms_arr[i]->coeff, terms_arr[i]->exp);
+	}
+	printf("\n");
+}
+
+int main() {
+    HashTable result = {0};  // 初始化散列表
+
+    // 示例多项式 1: 3x^2 + 2x + 1
+    Term poly1[] = {{3, 2, &poly1[1]}, {2, 1, &poly1[2]}, {1, 0, NULL}};
+    // 示例多项式 2: 4x + 5
+    Term poly2[] = {{4, 1, &poly2[1]}, {5, 0, NULL}};
+
+    term_multiply(&result, poly1, poly2);
+    printSortedPolynomial(&result);  // 打印排序后的结果
+
+    return 0;
 }
