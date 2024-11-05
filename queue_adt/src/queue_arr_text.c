@@ -1,4 +1,4 @@
-#include "queue_arr.h"
+#include "../include/queue_arr.h"
 #include <stdio.h>
 
 int main(void) {
