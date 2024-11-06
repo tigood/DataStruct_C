@@ -977,18 +977,18 @@ emm..具体的论证就不写了，每次访问一个元素的时候都会将这
 >
 > **d.** 代码实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_5_exs/5.11/str_match.c">str_match.c</a>
 
-### 3.12
+### 5.12
 
 > 代码实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_5_exs/5.12/main.c">main.c</a>
 
-### 3.13
+### 5.13
 
 > 代码实现：<a href="https://github.com/tigood/DataStruct_C/blob/main/unit_5_exs/5.13/word_serach.c">word_search.c</a>
 
-### 3.14
+### 5.14
 
 > ![image-20241106202929117](./README.assets/image-20241106202929117.png)
 
-### 3.15
+### 5.15
 
 > 如果表小到装入内存，它的性能是比不过分离链接法和开放定址法的。因为在找到树叶之后，它还需要在树叶中进行一个线性时间复杂度的查找，它的优势在于装入磁盘之后，减少了磁盘的访问次数，而不在于在内存中进行检索。
