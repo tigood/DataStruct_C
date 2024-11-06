@@ -44,7 +44,7 @@ bool enqueue(PQueue p_queue, ElementType elem) {
 		exit(EXIT_FAILURE);
 	}
 
-	// 判满
+	// 判满/
 	if ((p_queue->rear + 1) % MAXSIZE == p_queue->front) {
 		// 走到这里说明就满了
 		printf("队列已满，插入失败！\n");
