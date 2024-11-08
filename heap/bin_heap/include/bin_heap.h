@@ -59,4 +59,6 @@ bool is_empty_priority_queue(PriorityQueue priority_queue);
 // 后置条件：如果该优先队列满了就返回true，否则返回false
 bool is_full_priority_queue(PriorityQueue priority_queue);
 
+void hello_world(void);
+
 #endif
