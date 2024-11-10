@@ -85,3 +85,56 @@ BinQueue combin_bin_queues(BinQueue bin_queue_1, BinQueue bin_queue_2) {
 
 	return bin_queue_1;
 }
+
+// 删除并返回堆中最小元素
+ElementType delete_min_bin_queue(BinQueue bin_queue) {
+	if (!bin_queue) {
+		fprintf(stderr, "参数传递错误！\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if (is_empty_bin_queue(bin_queue)) {
+		fprintf(stderr, "二项队列为空！删除失败！\n");
+		exit(EXIT_FAILURE);
+	}
+
+	int min_tree_index;
+	BinQueue deleted_queue;
+	Position deleted_tree, old_root;
+	ElementType min_item;
+
+	min_item = 99999;  // 无穷大
+	// 找出拥有最小元素的二项树
+	for (int i = 0; i < MAX_TREE_COUNT; i++) {
+		if (bin_queue->the_trees[i] && bin_queue->the_trees[i]->elem < min_item) {
+			min_item = bin_queue->the_trees[i]->elem;
+			min_tree_index = i;
+		}
+	}
+
+	deleted_tree = bin_queue->the_trees[min_tree_index];
+	old_root = deleted_tree;
+	deleted_tree = deleted_tree->left_child;
+	// 释放被删除的节点
+	free(old_root);
+
+	deleted_queue = init_bin_queue();
+	deleted_queue->curr_size = (1 << min_tree_index) - 1;
+	for (int j = min_tree_index - 1; j >= 0; j--) {
+		deleted_queue->the_trees[j] = deleted_tree;
+		deleted_tree = deleted_tree->next_sibling;
+		deleted_queue->the_trees[j]->next_sibling = NULL;
+	}
+
+	bin_queue->the_trees[min_tree_index] = NULL;
+	bin_queue->curr_size -= deleted_queue->curr_size + 1;
+
+	combin_bin_queues(bin_queue, deleted_queue);
+
+	return min_item;
+}
+
+// 判断二项队列是否为空
+bool is_empty_bin_queue(BinQueue bin_queue) {
+	return bin_queue == NULL;
+}

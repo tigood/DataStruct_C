@@ -4,6 +4,7 @@
 #ifndef BIN_QUEUE_H
 #define BIN_QUEUE_H
 #define MAX_TREE_COUNT 10
+#include <stdbool.h>
 
 struct BinNode;  // 节点
 struct Collection;  // 堆序树集合
@@ -24,6 +25,9 @@ struct Collection {
 
 // 初始化一个二项队列
 BinQueue init_bin_queue(void);
+
+// 判断二项队列是否为空
+bool is_empty_bin_queue(BinQueue);
 
 // 合并两个同样大小的树
 BinTree combin_trees(BinTree tree_1, BinTree tree_2);
